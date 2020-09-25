@@ -1,0 +1,4 @@
+vendor
+tests/dist
+.phpunit.result.cache
+/.idea/workspace.xml
