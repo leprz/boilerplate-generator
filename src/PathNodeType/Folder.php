@@ -60,4 +60,11 @@ class Folder extends PathNode
 
         return $class;
     }
+
+    public function addPhpInterface(PhpInterface $interface): PhpInterface
+    {
+        $interface->setParent($this);
+
+        return $interface;
+    }
 }

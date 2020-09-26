@@ -9,7 +9,6 @@ use Leprz\Generator\PathNodeType\PhpFile;
 use Leprz\Generator\PathNodeType\PhpInterface;
 use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\Method;
-use Nette\PhpGenerator\Parameter;
 use Nette\PhpGenerator\PhpFile as PhpFileGen;
 use Nette\PhpGenerator\PhpNamespace;
 use Nette\PhpGenerator\PsrPrinter;
@@ -48,42 +47,53 @@ class ClassContentBuilder
     {
         $psrPrinter = new PsrPrinter();
 
-        $fileContent = $this->buildFileOpening(true);
+        $phpFileContent = $this->buildPhpFile(true);
 
         if ($phpFile instanceof PhpClass) {
-            $classType = $this->toClassType($phpFile);
-
             $namespace = $this->toNamespace($phpFile);
 
-            $classType->setMethods($this->toMethods($phpFile, $namespace));
-
-            $namespace->add($classType);
+            $class = $this->toClassType($phpFile, $namespace);
 
             if ($phpFile instanceof PhpInterface) {
-                $classType->setInterface();
+                $class->setInterface();
             }
 
-            return $fileContent . "\n" . $psrPrinter->printNamespace($namespace);
+            if ($phpClassMethods = $phpFile->getMethods()) {
+                foreach ($phpClassMethods as $phpClassMethod) {
+                    $this->addMethod($phpClassMethod, $class, $namespace);
+                }
+            }
+
+            $namespace->add($class);
+
+            return $phpFileContent . "\n" . $psrPrinter->printNamespace($namespace);
         }
 
-        return $fileContent;
+        return $phpFileContent;
     }
 
     /**
-     * @param \Leprz\Generator\PathNodeType\Method $method
+     * @param \Leprz\Generator\PathNodeType\Method $phpMethod
      * @return string
      * @throws \Nette\InvalidStateException
      */
-    public function buildMethod(\Leprz\Generator\PathNodeType\Method $method): string
+    public function buildMethod(\Leprz\Generator\PathNodeType\Method $phpMethod): string
     {
-        return $this->psrPrinter->printMethod($this->toMethod($method));
+        $method = new Method($phpMethod->getName());
+        $method
+            ->setParameters($this->toParameters($phpMethod, $method))
+            ->setVisibility($phpMethod->getVisibility());
+
+        $this->addReturnType($phpMethod, $method);
+
+        return $this->psrPrinter->printMethod($method);
     }
 
     /**
      * @param bool $strictTypes
      * @return string
      */
-    private function buildFileOpening(bool $strictTypes): string
+    private function buildPhpFile(bool $strictTypes): string
     {
         $fileGen = new PhpFileGen();
 
@@ -96,17 +106,32 @@ class ClassContentBuilder
 
     /**
      * @param \Leprz\Generator\PathNodeType\PhpClass $phpClass
+     * @param \Nette\PhpGenerator\PhpNamespace $namespace
      * @return \Nette\PhpGenerator\ClassType
      */
-    private function toClassType(PhpClass $phpClass): ClassType
+    private function toClassType(PhpClass $phpClass, PhpNamespace $namespace): ClassType
     {
         $className = $this->classMetadataBuilder->buildClassName($phpClass);
-        $classType = new ClassType($className);
+        $namespaceName = $this->classMetadataBuilder->buildNamespace($phpClass);
 
-        $namespace = $this->classMetadataBuilder->buildNamespace($phpClass);
-        $classType->addComment('@package ' . $namespace);
+        $class = new ClassType($className);
+        $class->addComment('@package ' . $namespaceName);
 
-        return $classType;
+        if ($extends = $phpClass->getExtends()) {
+            $use = $this->classMetadataBuilder->buildUse($extends);
+            $namespace->addUse($use);
+            $class->addExtend($use);
+        }
+
+        $implements = $phpClass->getImplements();
+
+        foreach ($implements as $implement) {
+            $use = $this->classMetadataBuilder->buildUse($implement);
+            $namespace->addUse($use);
+            $class->addImplement($use);
+        }
+
+        return $class;
     }
 
     /**
@@ -120,24 +145,40 @@ class ClassContentBuilder
 
     /**
      * @param \Leprz\Generator\PathNodeType\Method $phpClassMethod
+     * @param \Nette\PhpGenerator\ClassType $class
      * @param \Nette\PhpGenerator\PhpNamespace|null $namespace
      * @return \Nette\PhpGenerator\Method
-     * @throws \Nette\InvalidStateException
      */
-    private function toMethod(
+    private function addMethod(
         \Leprz\Generator\PathNodeType\Method $phpClassMethod,
+        ClassType $class,
         ?PhpNamespace $namespace = null
     ): Method {
-        $method = new Method($phpClassMethod->getName());
+        $method = $class
+            ->addMethod($phpClassMethod->getName())
+            ->setVisibility($phpClassMethod->getVisibility());
 
-        $method->setVisibility($phpClassMethod->getVisibility());
+        $method->setParameters($this->toParameters($phpClassMethod, $method));
 
+        $this->addReturnType($phpClassMethod, $method, $namespace);
+
+        return $method;
+    }
+
+    /**
+     * @param \Leprz\Generator\PathNodeType\Method $phpClassMethod
+     * @param \Nette\PhpGenerator\Method $method
+     * @return \Nette\PhpGenerator\Parameter[]
+     */
+    private function toParameters(
+        \Leprz\Generator\PathNodeType\Method $phpClassMethod,
+        Method $method
+    ): array {
         $parameters = [];
-
         $phpClassParameters = $phpClassMethod->getParameters();
 
         foreach ($phpClassParameters as $phpClassParameter) {
-            $parameter = new Parameter($phpClassParameter->getName());
+            $parameter = $method->addParameter($phpClassParameter->getName());
 
             if ($phpClassParameterType = $phpClassParameter->getType()) {
                 if ($phpClassParameterType instanceof PhpClass) {
@@ -155,9 +196,19 @@ class ClassContentBuilder
                 $parameters[] = $parameter;
             }
         }
+        return $parameters;
+    }
 
-        $method->setParameters($parameters);
-
+    /**
+     * @param \Leprz\Generator\PathNodeType\Method $phpClassMethod
+     * @param \Nette\PhpGenerator\Method $method
+     * @param \Nette\PhpGenerator\PhpNamespace|null $namespace
+     */
+    private function addReturnType(
+        \Leprz\Generator\PathNodeType\Method $phpClassMethod,
+        Method $method,
+        ?PhpNamespace $namespace = null
+    ): void {
         $phpClassReturnType = $phpClassMethod->getReturnType();
 
         if ($phpClassReturnType instanceof PhpClass) {
@@ -179,26 +230,5 @@ class ClassContentBuilder
         if (is_string($phpClassReturnType)) {
             $method->setReturnType($phpClassReturnType);
         }
-        return $method;
-    }
-
-    /**
-     * @param \Leprz\Generator\PathNodeType\PhpClass $phpClass
-     * @param \Nette\PhpGenerator\PhpNamespace $namespace
-     * @return \Nette\PhpGenerator\Method[]
-     */
-    private function toMethods(PhpClass $phpClass, PhpNamespace $namespace): array
-    {
-        $methods = [];
-
-        if ($phpClassMethods = $phpClass->getMethods()) {
-            foreach ($phpClassMethods as $phpClassMethod) {
-                $method = $this->toMethod($phpClassMethod, $namespace);
-
-                $methods[] = $method;
-            }
-        }
-
-        return $methods;
     }
 }

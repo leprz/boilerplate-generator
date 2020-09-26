@@ -1,4 +1,4 @@
 vendor
-tests/dist
+tests/output
 .phpunit.result.cache
 /.idea/workspace.xml

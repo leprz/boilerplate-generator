@@ -6,7 +6,6 @@ namespace Tests;
 
 use Leprz\Generator\Generator;
 use Leprz\Generator\Configuration;
-use Leprz\Generator\Builder\FileBuilder;
 use Leprz\Generator\Builder\ClassMetadataBuilder;
 use Leprz\Generator\PathNodeType\BoundedContext;
 use Leprz\Generator\PathNodeType\Folder;
@@ -25,22 +24,40 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class CodeGeneratorTest extends UnitTestCase
 {
-    private PhpClass $phpClass;
+    /**
+     * @var \Leprz\Generator\PathNodeType\PhpClass
+     */
+    private PhpClass $testClass2;
+
+    /**
+     * @var \Leprz\Generator\PathNodeType\PhpClass
+     */
+    private PhpClass $testClass1;
+
+    /**
+     * @var \Leprz\Generator\PathNodeType\PhpInterface
+     */
+    private PhpInterface $testInterface1;
+
+    /**
+     * @var \Leprz\Generator\PathNodeType\PhpInterface
+     */
+    private PhpInterface $testInterface2;
 
     public function test_GenerateChain_should_returnCorrectlyOrderedArray(): void
     {
         $this->assertEquals(
-            ['Domain', 'Application', 'Command', 'Action'],
+            ['Domain', 'Application', 'Command', 'TestClass2'],
             array_map(
                 static function (PathNode $item) {
                     return (string)$item;
                 },
-                $this->phpClass->generateChain()
+                $this->testClass2->generateChain()
             )
         );
     }
 
-    public function test_fileBuilder_should_buildValidPathForTheClass(): void
+  /*  public function test_fileBuilder_should_buildValidPathForTheClass(): void
     {
         $filesystemMock = $this->createMock(Filesystem::class);
 
@@ -52,15 +69,13 @@ class CodeGeneratorTest extends UnitTestCase
             str_replace('/', DIRECTORY_SEPARATOR, 'dist/Domain/Application/Command/Action.php'),
             $classPath
         );
-    }
+    }*/
 
     public function test_namespaceBuilder_should_buildValidNamespace(): void
     {
         $builder = new ClassMetadataBuilder('App');
 
-        if ($this->phpClass instanceof PhpClass) {
-            $namespace = $builder->buildNamespace($this->phpClass);
-        }
+        $namespace = $builder->buildNamespace($this->testClass2);
 
         $this->assertEquals('App\Domain\Application\Command', $namespace);
     }
@@ -72,15 +87,18 @@ class CodeGeneratorTest extends UnitTestCase
         $generator = new Generator(
             $filesystem,
             new Configuration(
-                'App',
-                'dist' . DIRECTORY_SEPARATOR
+                'Output',
+                __DIR__ . DIRECTORY_SEPARATOR . 'output' . DIRECTORY_SEPARATOR
             )
         );
 
-        $generator->generate($this->phpClass);
+        $generator->generate($this->testInterface1);
+        $generator->generate($this->testInterface2);
+        $generator->generate($this->testClass1);
+        $generator->generate($this->testClass2);
 
-        $generator->appendMethod($this->phpClass, new Method('test', 'public', 'void'));
-        $generator->appendMethod($this->phpClass, new Method('test1', 'private', $this->phpClass));
+        $generator->appendMethod($this->testClass2, new Method('test', 'public', 'string'));
+        $generator->appendMethod($this->testClass2, new Method('test1', 'private', $this->testClass2));
 
         $query = (new BoundedContext('Domain'))
             ->addLayer(new Layer('Application'))
@@ -89,6 +107,23 @@ class CodeGeneratorTest extends UnitTestCase
             ->addPhpFile(new PhpFile('PhpFile'));
 
         $generator->generate($query);
+
+        $command = (new BoundedContext('Domain'))
+            ->addLayer(new Layer('Application'))
+            ->addFolder(new Folder('Command'))
+            ->addPhpClass(new PhpClass('DoSomethingCommand'));
+
+        $generator->generate($command);
+
+        $handler = (new BoundedContext('Domain'))
+            ->addLayer(new Layer('Application'))
+            ->addFolder(new Folder('Command'))
+            ->addPhpClass(new PhpClass('DoSomethingHandler'))
+            ->addMethod(new Method('handle', 'public', 'void', [
+                new Parameter('command', $command)
+            ]));
+
+        $generator->generate($handler);
 
         $query = (new BoundedContext('Domain'))
             ->addLayer(new Layer('Application'))
@@ -113,17 +148,26 @@ class CodeGeneratorTest extends UnitTestCase
     {
         parent::setUp();
 
-        $appFixtures = (new Folder('DataFixtures'))
-            ->addPhpFile(new PhpClass('AppFixtures'));
+        $this->testClass1 = (new Folder('Sample'))
+            ->addPhpClass(new PhpClass('TestClass1'));
 
-        $this->phpClass = (new BoundedContext('Domain'))
+        $this->testInterface1 = (new Folder('Sample'))
+            ->addPhpInterface(new PhpInterface('TestInterface1'));
+
+        $this->testInterface2 = (new Folder('Sample'))
+            ->addPhpInterface(new PhpInterface('TestInterface2'))
+            ->addMethod(new Method('test', 'public', 'string'));
+
+        $this->testClass2 = (new BoundedContext('Domain'))
             ->addLayer(new Layer('Application'))
             ->addFolder(new Folder('Command'))
-            ->addPhpClass(new PhpClass('Action'))
+            ->addPhpClass(new PhpClass('TestClass2'))
+            ->extends($this->testClass1)
+            ->implements($this->testInterface1, $this->testInterface2)
             ->addMethod(new Method('doSomething', 'public', 'void', [
-                new Parameter('appFixtures', $appFixtures),
+                new Parameter('testClass1', $this->testClass1),
                 new Parameter('test', 'string')
             ]))
-            ->addMethod(new Method('doSomethingElse', 'private', $appFixtures));
+            ->addMethod(new Method('doSomethingElse', 'private', $this->testClass1));
     }
 }
