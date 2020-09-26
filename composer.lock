@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "083651a2787b11f42c8525ba7c02a71b",
+    "content-hash": "0f2826d740522a905cd0f20159665c8d",
     "packages": [
         {
             "name": "nette/php-generator",
@@ -1257,12 +1257,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "a7ad166ea320c12e9eb72d762c1b9440f692826c"
+                "reference": "96c8d70358519e7ee4132c9c9703f86510480a61"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/a7ad166ea320c12e9eb72d762c1b9440f692826c",
-                "reference": "a7ad166ea320c12e9eb72d762c1b9440f692826c",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/96c8d70358519e7ee4132c9c9703f86510480a61",
+                "reference": "96c8d70358519e7ee4132c9c9703f86510480a61",
                 "shasum": ""
             },
             "require": {
@@ -1316,7 +1316,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2020-09-25T16:43:11+00:00"
+            "time": "2020-09-26T08:05:15+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -1525,12 +1525,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "69537f9c3316b0750ed3c16054f273e4a021497d"
+                "reference": "c42c419d976e98bd5fe82dc6258f8e7132f00abe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/69537f9c3316b0750ed3c16054f273e4a021497d",
-                "reference": "69537f9c3316b0750ed3c16054f273e4a021497d",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/c42c419d976e98bd5fe82dc6258f8e7132f00abe",
+                "reference": "c42c419d976e98bd5fe82dc6258f8e7132f00abe",
                 "shasum": ""
             },
             "require": {
@@ -1606,7 +1606,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2020-09-25T13:26:28+00:00"
+            "time": "2020-09-26T08:18:47+00:00"
         },
         {
             "name": "psr/container",
@@ -3395,6 +3395,8 @@
     },
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "php": ">=7.4"
+    },
     "platform-dev": []
 }
