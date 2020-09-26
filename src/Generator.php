@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Leprz\Generator;
 
-use Leprz\Generator\Builder\ClassContentBuilder;
+use Leprz\Generator\Builder\ContentBuilderResolver;
 use Leprz\Generator\Builder\FileBuilder;
 use Leprz\Generator\Builder\ClassMetadataBuilder;
 use Leprz\Generator\PathNodeType\File;
 use Leprz\Generator\PathNodeType\Method;
 use Leprz\Generator\PathNodeType\PhpClass;
-use Leprz\Generator\PathNodeType\PhpFile;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -29,9 +28,9 @@ class Generator
     private ClassMetadataBuilder $namespaceBuilder;
 
     /**
-     * @var \Leprz\Generator\Builder\ClassContentBuilder
+     * @var \Leprz\Generator\Builder\ContentBuilderResolver
      */
-    private ClassContentBuilder $classContentBuilder;
+    private ContentBuilderResolver $contentBuilderResolver;
 
     /**
      * @param \Symfony\Component\Filesystem\Filesystem $filesystem
@@ -41,17 +40,20 @@ class Generator
     {
         $this->fileBuilder = new FileBuilder($configuration->getAppSrc(), $filesystem);
         $this->namespaceBuilder = new ClassMetadataBuilder($configuration->getAppPrefix());
-        $this->classContentBuilder = new ClassContentBuilder($this->namespaceBuilder);
+        $this->contentBuilderResolver = new ContentBuilderResolver($configuration);
     }
 
     /**
      * @param \Leprz\Generator\PathNodeType\File $file
      * @return string file path
+     * @throws \Leprz\Generator\Exception\FileNotSupportedByContentBuilderException
      */
     public function generate(File $file): string
     {
-        if ($file instanceof PhpFile) {
-            return $this->fileBuilder->createFile($file, $this->classContentBuilder->build($file));
+        $contentBuilder = $this->contentBuilderResolver->resolve($file);
+
+        if ($contentBuilder !== null) {
+            return $this->fileBuilder->createFile($file, $contentBuilder->build());
         }
 
         return $this->fileBuilder->createFile($file, '');
@@ -65,6 +67,7 @@ class Generator
      */
     public function appendMethod(PhpClass $file, Method $method): string
     {
+        return ''; // TODO fix append Method
         return $this->fileBuilder->appendToFile($file, $this->classContentBuilder->buildMethod($method));
     }
 }

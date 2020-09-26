@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Leprz\Generator\Builder;
 
+use Leprz\Generator\Builder\FileContent\ClassContentBuilderInterface;
+use Leprz\Generator\Exception\FileNotSupportedByContentBuilderException;
+use Leprz\Generator\PathNodeType\File;
 use Leprz\Generator\PathNodeType\PhpClass;
 use Leprz\Generator\PathNodeType\PhpFile;
 use Leprz\Generator\PathNodeType\PhpInterface;
@@ -17,7 +20,7 @@ use PhpParser\Comment\Doc;
 /**
  * @package Leprz\Generator\Builder
  */
-class ClassContentBuilder
+class PhpFileContentBuilder implements ContentBuilderInterface
 {
     /**
      * @var \Leprz\Generator\Builder\ClassMetadataBuilder
@@ -30,21 +33,45 @@ class ClassContentBuilder
     private PsrPrinter $psrPrinter;
 
     /**
+     * @var \Leprz\Generator\Builder\FileContent\ClassContentBuilderInterface
+     */
+    private ClassContentBuilderInterface $classContentBuilder;
+
+    private ?PhpFile $file = null;
+
+    /**
      * @param \Leprz\Generator\Builder\ClassMetadataBuilder $classMetadataBuilder
+     * @param \Leprz\Generator\Builder\FileContent\ClassContentBuilderInterface $classContentBuilder
      */
     public function __construct(
-        ClassMetadataBuilder $classMetadataBuilder
+        ClassMetadataBuilder $classMetadataBuilder,
+        ClassContentBuilderInterface $classContentBuilder
     ) {
         $this->psrPrinter = new PsrPrinter();
         $this->classMetadataBuilder = $classMetadataBuilder;
+        $this->classContentBuilder = $classContentBuilder;
     }
 
     /**
-     * @param \Leprz\Generator\PathNodeType\PhpFile $phpFile
+     * @param \Leprz\Generator\PathNodeType\File $file
+     * @throws \Leprz\Generator\Exception\FileNotSupportedByContentBuilderException
+     */
+    public function setFileIfSupported(File $file): void
+    {
+        if ($file instanceof PhpFile) {
+            $this->file = $file;
+        } else {
+            throw new FileNotSupportedByContentBuilderException(get_class($file));
+        }
+    }
+
+    /**
      * @return string
      */
-    public function build(PhpFile $phpFile): string
+    public function build(): string
     {
+        $phpFile = $this->file;
+
         $psrPrinter = new PsrPrinter();
 
         $phpFileContent = $this->buildPhpFile(true);
@@ -63,7 +90,6 @@ class ClassContentBuilder
                     $this->addMethod($phpClassMethod, $class, $namespace);
                 }
             }
-
             $namespace->add($class);
 
             return $phpFileContent . "\n" . $psrPrinter->printNamespace($namespace);
@@ -106,6 +132,15 @@ class ClassContentBuilder
 
     /**
      * @param \Leprz\Generator\PathNodeType\PhpClass $phpClass
+     * @return \Nette\PhpGenerator\PhpNamespace
+     */
+    private function toNamespace(PhpClass $phpClass): PhpNamespace
+    {
+        return new PhpNamespace($this->classMetadataBuilder->buildNamespace($phpClass));
+    }
+
+    /**
+     * @param \Leprz\Generator\PathNodeType\PhpClass $phpClass
      * @param \Nette\PhpGenerator\PhpNamespace $namespace
      * @return \Nette\PhpGenerator\ClassType
      */
@@ -132,15 +167,6 @@ class ClassContentBuilder
         }
 
         return $class;
-    }
-
-    /**
-     * @param \Leprz\Generator\PathNodeType\PhpClass $phpClass
-     * @return \Nette\PhpGenerator\PhpNamespace
-     */
-    private function toNamespace(PhpClass $phpClass): PhpNamespace
-    {
-        return new PhpNamespace($this->classMetadataBuilder->buildNamespace($phpClass));
     }
 
     /**

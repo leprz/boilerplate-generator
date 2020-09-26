@@ -80,16 +80,45 @@ class CodeGeneratorTest extends UnitTestCase
         $this->assertEquals('App\Domain\Application\Command', $namespace);
     }
 
+    public function test_fileBuilderResolver()
+    {
+        $filesystem = new Filesystem();
+
+        $configuration = new Configuration(
+            'Output',
+            __DIR__ . DIRECTORY_SEPARATOR . 'output' . DIRECTORY_SEPARATOR
+        );
+
+        $yamlContentBuilder = new YamlContentBuilder();
+        $configuration->setContentBuilder(YamlFile::class, $yamlContentBuilder);
+
+        $generator = new Generator(
+            $filesystem,
+            $configuration
+        );
+
+        $yaml = (new Folder('YamlTest'))
+            ->addFile(
+                (new YamlFile('config'))
+                    ->addParameter('some_param_name', 'this is some value')
+            );
+
+        $generator->generate($yaml);
+    }
+
     public function test_fileGenerator()
     {
         $filesystem = new Filesystem();
 
+        $configuration = new Configuration(
+            'Output',
+            __DIR__ . DIRECTORY_SEPARATOR . 'output' . DIRECTORY_SEPARATOR
+        );
+
+        $configuration->setContentBuilder(YamlFile::class, new YamlContentBuilder());
         $generator = new Generator(
             $filesystem,
-            new Configuration(
-                'Output',
-                __DIR__ . DIRECTORY_SEPARATOR . 'output' . DIRECTORY_SEPARATOR
-            )
+            $configuration
         );
 
         $generator->generate($this->testInterface1);
