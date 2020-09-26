@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Leprz\Generator\Builder;
+namespace Leprz\Boilerplate\Builder;
 
-use Leprz\Generator\PathNodeType\PathNode;
-use Leprz\Generator\PathNodeType\PhpClass;
+use Leprz\Boilerplate\PathNodeType\PathNode;
+use Leprz\Boilerplate\PathNodeType\PhpClass;
 
 /**
- * @package Leprz\Generator\PathNodeType
+ * @package Leprz\Boilerplate\PathNodeType
  */
 class ClassMetadataBuilder
 {
@@ -26,7 +26,7 @@ class ClassMetadataBuilder
     }
 
     /**
-     * @param \Leprz\Generator\PathNodeType\PhpClass $class
+     * @param \Leprz\Boilerplate\PathNodeType\PhpClass $class
      * @return string
      */
     public function buildNamespace(PhpClass $class): string
@@ -39,7 +39,7 @@ class ClassMetadataBuilder
     }
 
     /**
-     * @param \Leprz\Generator\PathNodeType\PhpClass $class
+     * @param \Leprz\Boilerplate\PathNodeType\PhpClass $class
      * @return string
      */
     public function buildClassName(PhpClass $class): string
@@ -48,7 +48,7 @@ class ClassMetadataBuilder
     }
 
     /**
-     * @param \Leprz\Generator\PathNodeType\PhpClass $class
+     * @param \Leprz\Boilerplate\PathNodeType\PhpClass $class
      * @return string
      */
     public function buildUse(PhpClass $class): string
@@ -57,7 +57,7 @@ class ClassMetadataBuilder
     }
 
     /**
-     * @param \Leprz\Generator\PathNodeType\PathNode[] $chain
+     * @param \Leprz\Boilerplate\PathNodeType\PathNode[] $chain
      * @return string
      */
     private function concatChunksIntoNamespace(array $chain): string

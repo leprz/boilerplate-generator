@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Leprz\Generator\PathNodeType;
+namespace Leprz\Boilerplate\PathNodeType;
 
 /**
- * @package Leprz\Generator\PathNodeType
+ * @package Leprz\Boilerplate\PathNodeType
  */
 class Method
 {
@@ -15,12 +15,12 @@ class Method
     private string $name;
 
     /**
-     * @var string|\Leprz\Generator\PathNodeType\PhpClass
+     * @var string|\Leprz\Boilerplate\PathNodeType\PhpClass
      */
     private $returnType;
 
     /**
-     * @var \Leprz\Generator\PathNodeType\Parameter[]
+     * @var \Leprz\Boilerplate\PathNodeType\Parameter[]
      */
     private array $parameters;
 
@@ -33,7 +33,7 @@ class Method
      * @param string $name
      * @param string $visibility
      * @param string $returnType
-     * @param \Leprz\Generator\PathNodeType\Parameter[] $params
+     * @param \Leprz\Boilerplate\PathNodeType\Parameter[] $params
      */
     public function __construct(string $name, string $visibility = 'public', $returnType = 'void', $params = [])
     {
@@ -52,7 +52,7 @@ class Method
     }
 
     /**
-     * @return string|\Leprz\Generator\PathNodeType\PhpClass
+     * @return string|\Leprz\Boilerplate\PathNodeType\PhpClass
      */
     public function getReturnType()
     {
@@ -60,7 +60,7 @@ class Method
     }
 
     /**
-     * @return \Leprz\Generator\PathNodeType\Parameter[]
+     * @return \Leprz\Boilerplate\PathNodeType\Parameter[]
      */
     public function getParameters(): array
     {

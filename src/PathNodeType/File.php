@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Leprz\Generator\PathNodeType;
+namespace Leprz\Boilerplate\PathNodeType;
 
 /**
- * @package Leprz\Generator\PathNodeType
+ * @package Leprz\Boilerplate\PathNodeType
  */
 class File extends PathNode
 {
@@ -25,7 +25,7 @@ class File extends PathNode
     }
 
     /**
-     * @return \Leprz\Generator\PathNodeType\PathNode[]
+     * @return \Leprz\Boilerplate\PathNodeType\PathNode[]
      */
     public function generateChain(): array
     {

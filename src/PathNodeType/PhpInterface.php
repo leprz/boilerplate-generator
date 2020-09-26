@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Leprz\Generator\PathNodeType;
+namespace Leprz\Boilerplate\PathNodeType;
 
 /**
- * @package Leprz\Generator\PathNodeType
+ * @package Leprz\Boilerplate\PathNodeType
  */
 class PhpInterface extends PhpClass
 {

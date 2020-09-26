@@ -1,6 +1,6 @@
 > Easily generate CRUD, commands, handlers, hexagonal ports, adapters - tailored to your needs.
 
-@leprz/php-code-generator
+@leprz/boilerplate-generator
 =========================
 ![example workflow name](https://github.com/leprz/php-code-generator/workflows/Build/badge.svg)
 
@@ -13,7 +13,7 @@ Generated code is  PSR-12 and PSR-4 complaint.
 Installation:
 
 ```shell
-composer require leprz/php-code-generator
+composer require leprz/boilerplate-generator --dev
 ```
 
 Requirements
@@ -23,7 +23,8 @@ PHP >= 7.4
 Code
 ----
 ```php
-$this->generator = new Generator(
+/** @var \Leprz\Boilerplate\Generator $generator */
+$generator = new Generator(
     new Filesystem(),
     new Configuration(
         'AppPrefix',
@@ -42,8 +43,8 @@ $handler = (new Folder('Command'))
         new Parameter('command', $command)
     ]));
 
-$this->generator->generate($command);
-$this->generator->generate($handler);
+$generator->generate($command);
+$generator->generate($handler);
 ```
 
 will create `src/Command/ExampleUseCase/ExampleCommand.php`

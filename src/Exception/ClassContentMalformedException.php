@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Leprz\Generator\Exception;
+namespace Leprz\Boilerplate\Exception;
 
 use Exception;
 

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Leprz\Generator\Builder;
+namespace Leprz\Boilerplate\Builder;
 
-use Leprz\Generator\Exception\ClassContentMalformedException;
-use Leprz\Generator\PathNodeType\File;
-use Leprz\Generator\PathNodeType\PhpClass;
+use Leprz\Boilerplate\Exception\ClassContentMalformedException;
+use Leprz\Boilerplate\PathNodeType\File;
+use Leprz\Boilerplate\PathNodeType\PhpClass;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -35,7 +35,7 @@ class FileBuilder
     }
 
     /**
-     * @param \Leprz\Generator\PathNodeType\File $file
+     * @param \Leprz\Boilerplate\PathNodeType\File $file
      * @return string
      */
     public function buildFilePath(File $file): string
@@ -46,7 +46,7 @@ class FileBuilder
     }
 
     /**
-     * @param \Leprz\Generator\PathNodeType\File $file
+     * @param \Leprz\Boilerplate\PathNodeType\File $file
      * @param string $content
      * @return string
      */
@@ -60,10 +60,10 @@ class FileBuilder
     }
 
     /**
-     * @param \Leprz\Generator\PathNodeType\PhpClass $file
+     * @param \Leprz\Boilerplate\PathNodeType\PhpClass $file
      * @param string $methodContent
      * @return string
-     * @throws \Leprz\Generator\Exception\ClassContentMalformedException
+     * @throws \Leprz\Boilerplate\Exception\ClassContentMalformedException
      */
     public function appendToFile(PhpClass $file, string $methodContent): string
     {

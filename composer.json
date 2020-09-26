@@ -1,6 +1,6 @@
 {
-    "name": "leprz/php-code-generator",
-    "description": "This package helps you generate any kind of php boilerplate - easily!",
+    "name": "leprz/boilerplate-generator",
+    "description": "This package helps you generate any kind of boilerplate - easily!",
     "type": "package",
     "require": {
         "php": ">=7.4",
@@ -22,7 +22,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Leprz\\Generator\\": "src"
+            "Leprz\\Boilerplate\\": "src"
         }
     },
     "autoload-dev": {

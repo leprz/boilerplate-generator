@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Leprz\Generator;
+namespace Leprz\Boilerplate;
 
 /**
- * @package Leprz\Generator\PathNodeType\ValueObject
+ * @package Leprz\Boilerplate\PathNodeType\ValueObject
  */
 class Configuration
 {

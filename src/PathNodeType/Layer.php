@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Leprz\Generator\PathNodeType;
+namespace Leprz\Boilerplate\PathNodeType;
 
 use InvalidArgumentException;
 
 /**
- * @package Leprz\Generator\PathNodeType
+ * @package Leprz\Boilerplate\PathNodeType
  */
 class Layer extends PathNode
 {
@@ -24,8 +24,8 @@ class Layer extends PathNode
     }
 
     /**
-     * @param \Leprz\Generator\PathNodeType\Folder $folder
-     * @return \Leprz\Generator\PathNodeType\Folder
+     * @param \Leprz\Boilerplate\PathNodeType\Folder $folder
+     * @return \Leprz\Boilerplate\PathNodeType\Folder
      */
     public function addFolder(Folder $folder): Folder
     {
@@ -35,8 +35,8 @@ class Layer extends PathNode
     }
 
     /**
-     * @param \Leprz\Generator\PathNodeType\File $class
-     * @return \Leprz\Generator\PathNodeType\File
+     * @param \Leprz\Boilerplate\PathNodeType\File $class
+     * @return \Leprz\Boilerplate\PathNodeType\File
      */
     public function addClass(File $class): File
     {

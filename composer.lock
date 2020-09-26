@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0f2826d740522a905cd0f20159665c8d",
+    "content-hash": "41ff9fbd877e8d30bd3c8af1286a7bed",
     "packages": [
         {
             "name": "nette/php-generator",
@@ -150,16 +150,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v4.10.1",
+            "version": "v4.10.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "1b479e7592812411c20c34d9ed33db3957bde66e"
+                "reference": "658f1be311a230e0907f5dfe0213742aff0596de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/1b479e7592812411c20c34d9ed33db3957bde66e",
-                "reference": "1b479e7592812411c20c34d9ed33db3957bde66e",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/658f1be311a230e0907f5dfe0213742aff0596de",
+                "reference": "658f1be311a230e0907f5dfe0213742aff0596de",
                 "shasum": ""
             },
             "require": {
@@ -198,7 +198,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2020-09-23T18:23:49+00:00"
+            "time": "2020-09-26T10:30:38+00:00"
         },
         {
             "name": "symfony/filesystem",
@@ -1194,12 +1194,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "b71237982ce2a56f3231d67898cb6e31ccb2db70"
+                "reference": "d66a5905308694dbba0ab327c9e996c471b00445"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/b71237982ce2a56f3231d67898cb6e31ccb2db70",
-                "reference": "b71237982ce2a56f3231d67898cb6e31ccb2db70",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/d66a5905308694dbba0ab327c9e996c471b00445",
+                "reference": "d66a5905308694dbba0ab327c9e996c471b00445",
                 "shasum": ""
             },
             "require": {
@@ -1249,7 +1249,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2020-09-18T12:57:36+00:00"
+            "time": "2020-09-26T13:57:03+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",

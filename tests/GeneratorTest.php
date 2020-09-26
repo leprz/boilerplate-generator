@@ -4,45 +4,50 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use Leprz\Generator\Generator;
-use Leprz\Generator\Configuration;
-use Leprz\Generator\Builder\ClassMetadataBuilder;
-use Leprz\Generator\PathNodeType\BoundedContext;
-use Leprz\Generator\PathNodeType\Folder;
-use Leprz\Generator\PathNodeType\File;
-use Leprz\Generator\PathNodeType\Layer;
-use Leprz\Generator\PathNodeType\Method;
-use Leprz\Generator\PathNodeType\PathNode;
-use Leprz\Generator\PathNodeType\Parameter;
-use Leprz\Generator\PathNodeType\PhpClass;
-use Leprz\Generator\PathNodeType\PhpFile;
-use Leprz\Generator\PathNodeType\PhpInterface;
+use Leprz\Boilerplate\Generator;
+use Leprz\Boilerplate\Configuration;
+use Leprz\Boilerplate\Builder\ClassMetadataBuilder;
+use Leprz\Boilerplate\PathNodeType\BoundedContext;
+use Leprz\Boilerplate\PathNodeType\Folder;
+use Leprz\Boilerplate\PathNodeType\File;
+use Leprz\Boilerplate\PathNodeType\Layer;
+use Leprz\Boilerplate\PathNodeType\Method;
+use Leprz\Boilerplate\PathNodeType\PathNode;
+use Leprz\Boilerplate\PathNodeType\Parameter;
+use Leprz\Boilerplate\PathNodeType\PhpClass;
+use Leprz\Boilerplate\PathNodeType\PhpFile;
+use Leprz\Boilerplate\PathNodeType\PhpInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * @package App\Tests\Shared\Infrastructure\Generator
  */
-class CodeGeneratorTest extends UnitTestCase
+class GeneratorTest extends UnitTestCase
 {
     /**
-     * @var \Leprz\Generator\PathNodeType\PhpClass
+     * @var \Leprz\Boilerplate\PathNodeType\PhpClass
      */
     private PhpClass $testClass2;
 
     /**
-     * @var \Leprz\Generator\PathNodeType\PhpClass
+     * @var \Leprz\Boilerplate\PathNodeType\PhpClass
      */
     private PhpClass $testClass1;
 
     /**
-     * @var \Leprz\Generator\PathNodeType\PhpInterface
+     * @var \Leprz\Boilerplate\PathNodeType\PhpInterface
      */
     private PhpInterface $testInterface1;
 
     /**
-     * @var \Leprz\Generator\PathNodeType\PhpInterface
+     * @var \Leprz\Boilerplate\PathNodeType\PhpInterface
      */
     private PhpInterface $testInterface2;
+
+    /**
+     * @var \Leprz\Boilerplate\Generator
+     */
+    private Generator $generator;
 
     public function test_GenerateChain_should_returnCorrectlyOrderedArray(): void
     {
@@ -80,25 +85,40 @@ class CodeGeneratorTest extends UnitTestCase
         $this->assertEquals('App\Domain\Application\Command', $namespace);
     }
 
-    public function test_fileGenerator()
+    public function test()
     {
-        $filesystem = new Filesystem();
-
-        $generator = new Generator(
-            $filesystem,
+        $this->generator = new Generator(
+            new Filesystem(),
             new Configuration(
-                'Output',
-                __DIR__ . DIRECTORY_SEPARATOR . 'output' . DIRECTORY_SEPARATOR
+                'AppPrefix',
+                __DIR__ . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR
             )
         );
 
-        $generator->generate($this->testInterface1);
-        $generator->generate($this->testInterface2);
-        $generator->generate($this->testClass1);
-        $generator->generate($this->testClass2);
+        $command = (new Folder('Command'))
+            ->addFolder(new Folder('ExampleUseCase'))
+            ->addPhpClass(new PhpClass('ExampleCommand'));
 
-        $generator->appendMethod($this->testClass2, new Method('test', 'public', 'string'));
-        $generator->appendMethod($this->testClass2, new Method('test1', 'private', $this->testClass2));
+        $handler = (new Folder('Command'))
+            ->addFolder(new Folder('ExampleUseCase'))
+            ->addPhpClass(new PhpClass('ExampleHandler'))
+            ->addMethod(new Method('__invoke', 'public', 'void', [
+                new Parameter('command', $command)
+            ]));
+
+        $this->generator->generate($command);
+        $this->generator->generate($handler);
+    }
+
+    public function test_fileGenerator()
+    {
+        $this->generator->generate($this->testInterface1);
+        $this->generator->generate($this->testInterface2);
+        $this->generator->generate($this->testClass1);
+        $this->generator->generate($this->testClass2);
+
+        $this->generator->appendMethod($this->testClass2, new Method('test', 'public', 'string'));
+        $this->generator->appendMethod($this->testClass2, new Method('test1', 'private', $this->testClass2));
 
         $query = (new BoundedContext('Domain'))
             ->addLayer(new Layer('Application'))
@@ -106,14 +126,14 @@ class CodeGeneratorTest extends UnitTestCase
             ->addFolder(new Folder('View'))
             ->addPhpFile(new PhpFile('PhpFile'));
 
-        $generator->generate($query);
+        $this->generator->generate($query);
 
         $command = (new BoundedContext('Domain'))
             ->addLayer(new Layer('Application'))
             ->addFolder(new Folder('Command'))
             ->addPhpClass(new PhpClass('DoSomethingCommand'));
 
-        $generator->generate($command);
+        $this->generator->generate($command);
 
         $handler = (new BoundedContext('Domain'))
             ->addLayer(new Layer('Application'))
@@ -123,7 +143,7 @@ class CodeGeneratorTest extends UnitTestCase
                 new Parameter('command', $command)
             ]));
 
-        $generator->generate($handler);
+        $this->generator->generate($handler);
 
         $query = (new BoundedContext('Domain'))
             ->addLayer(new Layer('Application'))
@@ -131,7 +151,7 @@ class CodeGeneratorTest extends UnitTestCase
             ->addFolder(new Folder('View'))
             ->addPhpFile(new PhpInterface('PhpInterface'));
 
-        $generator->generate($query);
+        $this->generator->generate($query);
 
         $query = (new BoundedContext('Domain'))
             ->addLayer(new Layer('Application'))
@@ -139,7 +159,7 @@ class CodeGeneratorTest extends UnitTestCase
             ->addFolder(new Folder('View'))
             ->addFile(new File('file', 'yaml'));
 
-        $generator->generate($query);
+        $this->generator->generate($query);
 
         $this->assertTrue(true);
     }
@@ -147,6 +167,16 @@ class CodeGeneratorTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        $filesystem = new Filesystem();
+
+        $this->generator = new Generator(
+            $filesystem,
+            new Configuration(
+                'Output',
+                __DIR__ . DIRECTORY_SEPARATOR . 'output' . DIRECTORY_SEPARATOR
+            )
+        );
 
         $this->testClass1 = (new Folder('Sample'))
             ->addPhpClass(new PhpClass('TestClass1'));

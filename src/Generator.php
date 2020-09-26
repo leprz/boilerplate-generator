@@ -2,40 +2,40 @@
 
 declare(strict_types=1);
 
-namespace Leprz\Generator;
+namespace Leprz\Boilerplate;
 
-use Leprz\Generator\Builder\ClassContentBuilder;
-use Leprz\Generator\Builder\FileBuilder;
-use Leprz\Generator\Builder\ClassMetadataBuilder;
-use Leprz\Generator\PathNodeType\File;
-use Leprz\Generator\PathNodeType\Method;
-use Leprz\Generator\PathNodeType\PhpClass;
-use Leprz\Generator\PathNodeType\PhpFile;
+use Leprz\Boilerplate\Builder\ClassContentBuilder;
+use Leprz\Boilerplate\Builder\FileBuilder;
+use Leprz\Boilerplate\Builder\ClassMetadataBuilder;
+use Leprz\Boilerplate\PathNodeType\File;
+use Leprz\Boilerplate\PathNodeType\Method;
+use Leprz\Boilerplate\PathNodeType\PhpClass;
+use Leprz\Boilerplate\PathNodeType\PhpFile;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * @package Leprz\Generator
+ * @package Leprz\Boilerplate
  */
 class Generator
 {
     /**
-     * @var \Leprz\Generator\Builder\FileBuilder
+     * @var \Leprz\Boilerplate\Builder\FileBuilder
      */
     private FileBuilder $fileBuilder;
 
     /**
-     * @var \Leprz\Generator\Builder\ClassMetadataBuilder
+     * @var \Leprz\Boilerplate\Builder\ClassMetadataBuilder
      */
     private ClassMetadataBuilder $namespaceBuilder;
 
     /**
-     * @var \Leprz\Generator\Builder\ClassContentBuilder
+     * @var \Leprz\Boilerplate\Builder\ClassContentBuilder
      */
     private ClassContentBuilder $classContentBuilder;
 
     /**
      * @param \Symfony\Component\Filesystem\Filesystem $filesystem
-     * @param \Leprz\Generator\Configuration $configuration
+     * @param \Leprz\Boilerplate\Configuration $configuration
      */
     public function __construct(Filesystem $filesystem, Configuration $configuration)
     {
@@ -45,7 +45,7 @@ class Generator
     }
 
     /**
-     * @param \Leprz\Generator\PathNodeType\File $file
+     * @param \Leprz\Boilerplate\PathNodeType\File $file
      * @return string file path
      */
     public function generate(File $file): string
@@ -58,10 +58,10 @@ class Generator
     }
 
     /**
-     * @param \Leprz\Generator\PathNodeType\PhpClass $file
-     * @param \Leprz\Generator\PathNodeType\Method $method
+     * @param \Leprz\Boilerplate\PathNodeType\PhpClass $file
+     * @param \Leprz\Boilerplate\PathNodeType\Method $method
      * @return string
-     * @throws \Leprz\Generator\Exception\ClassContentMalformedException
+     * @throws \Leprz\Boilerplate\Exception\ClassContentMalformedException
      */
     public function appendMethod(PhpClass $file, Method $method): string
     {

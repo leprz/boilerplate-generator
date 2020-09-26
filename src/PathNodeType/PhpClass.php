@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Leprz\Generator\PathNodeType;
+namespace Leprz\Boilerplate\PathNodeType;
 
 /**
- * @package Leprz\Generator\PathNodeType
+ * @package Leprz\Boilerplate\PathNodeType
  */
 class PhpClass extends PhpFile
 {
     /**
-     * @var \Leprz\Generator\PathNodeType\PhpClass|null
+     * @var \Leprz\Boilerplate\PathNodeType\PhpClass|null
      */
     private ?PhpClass $extends = null;
 
     /**
-     * @var \Leprz\Generator\PathNodeType\PhpInterface[]
+     * @var \Leprz\Boilerplate\PathNodeType\PhpInterface[]
      */
     private array $implements = [];
 
@@ -35,7 +35,7 @@ class PhpClass extends PhpFile
     }
 
     /**
-     * @param \Leprz\Generator\PathNodeType\PhpInterface ...$phpInterface
+     * @param \Leprz\Boilerplate\PathNodeType\PhpInterface ...$phpInterface
      * @return $this
      */
     public function implements(PhpInterface ...$phpInterface): self
@@ -46,7 +46,7 @@ class PhpClass extends PhpFile
     }
 
     /**
-     * @return \Leprz\Generator\PathNodeType\PhpClass|null
+     * @return \Leprz\Boilerplate\PathNodeType\PhpClass|null
      */
     public function getExtends(): ?PhpClass
     {
@@ -54,7 +54,7 @@ class PhpClass extends PhpFile
     }
 
     /**
-     * @return \Leprz\Generator\PathNodeType\PhpInterface[]
+     * @return \Leprz\Boilerplate\PathNodeType\PhpInterface[]
      */
     public function getImplements(): array
     {

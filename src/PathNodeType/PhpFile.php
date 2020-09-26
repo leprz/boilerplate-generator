@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Leprz\Generator\PathNodeType;
+namespace Leprz\Boilerplate\PathNodeType;
 
 /**
- * @package Leprz\Generator\PathNodeType
+ * @package Leprz\Boilerplate\PathNodeType
  */
 class PhpFile extends File
 {
     /**
-     * @var \Leprz\Generator\PathNodeType\Method[]
+     * @var \Leprz\Boilerplate\PathNodeType\Method[]
      */
     private array $methods = [];
 
@@ -23,8 +23,8 @@ class PhpFile extends File
     }
 
     /**
-     * @param \Leprz\Generator\PathNodeType\Method $method
-     * @return \Leprz\Generator\PathNodeType\PhpFile
+     * @param \Leprz\Boilerplate\PathNodeType\Method $method
+     * @return \Leprz\Boilerplate\PathNodeType\PhpFile
      */
     public function addMethod(Method $method): self
     {
@@ -34,7 +34,7 @@ class PhpFile extends File
     }
 
     /**
-     * @return \Leprz\Generator\PathNodeType\Method[]
+     * @return \Leprz\Boilerplate\PathNodeType\Method[]
      */
     public function getMethods(): array
     {

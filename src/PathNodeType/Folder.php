@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Leprz\Generator\PathNodeType;
+namespace Leprz\Boilerplate\PathNodeType;
 
 /**
- * @package Leprz\Generator\PathNodeType
+ * @package Leprz\Boilerplate\PathNodeType
  */
 class Folder extends PathNode
 {
@@ -18,8 +18,8 @@ class Folder extends PathNode
     }
 
     /**
-     * @param \Leprz\Generator\PathNodeType\Folder $folder
-     * @return \Leprz\Generator\PathNodeType\Folder
+     * @param \Leprz\Boilerplate\PathNodeType\Folder $folder
+     * @return \Leprz\Boilerplate\PathNodeType\Folder
      */
     public function addFolder(Folder $folder): Folder
     {
@@ -29,8 +29,8 @@ class Folder extends PathNode
     }
 
     /**
-     * @param \Leprz\Generator\PathNodeType\File $file
-     * @return \Leprz\Generator\PathNodeType\File
+     * @param \Leprz\Boilerplate\PathNodeType\File $file
+     * @return \Leprz\Boilerplate\PathNodeType\File
      */
     public function addFile(File $file): File
     {
@@ -40,8 +40,8 @@ class Folder extends PathNode
     }
 
     /**
-     * @param \Leprz\Generator\PathNodeType\PhpFile $file
-     * @return \Leprz\Generator\PathNodeType\PhpFile
+     * @param \Leprz\Boilerplate\PathNodeType\PhpFile $file
+     * @return \Leprz\Boilerplate\PathNodeType\PhpFile
      */
     public function addPhpFile(PhpFile $file): PhpFile
     {
@@ -51,8 +51,8 @@ class Folder extends PathNode
     }
 
     /**
-     * @param \Leprz\Generator\PathNodeType\PhpClass $class
-     * @return \Leprz\Generator\PathNodeType\PhpClass
+     * @param \Leprz\Boilerplate\PathNodeType\PhpClass $class
+     * @return \Leprz\Boilerplate\PathNodeType\PhpClass
      */
     public function addPhpClass(PhpClass $class): PhpClass
     {

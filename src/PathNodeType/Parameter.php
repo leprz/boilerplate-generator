@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Leprz\Generator\PathNodeType;
+namespace Leprz\Boilerplate\PathNodeType;
 
 /**
- * @package Leprz\Generator\PathNodeType
+ * @package Leprz\Boilerplate\PathNodeType
  */
 class Parameter
 {
@@ -15,13 +15,13 @@ class Parameter
     private string $name;
 
     /**
-     * @var \Leprz\Generator\PathNodeType\PhpClass|string
+     * @var \Leprz\Boilerplate\PathNodeType\PhpClass|string
      */
     private $type;
 
     /**
      * @param string $name
-     * @param string|\Leprz\Generator\PathNodeType\PhpClass $type
+     * @param string|\Leprz\Boilerplate\PathNodeType\PhpClass $type
      */
     public function __construct(string $name, $type)
     {
@@ -38,7 +38,7 @@ class Parameter
     }
 
     /**
-     * @return \Leprz\Generator\PathNodeType\PhpClass|string
+     * @return \Leprz\Boilerplate\PathNodeType\PhpClass|string
      */
     public function getType()
     {

@@ -2,7 +2,10 @@
 <module type="WEB_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" packagePrefix="Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" packagePrefix="Leprz\Boilerplate\" />
+      <sourceFolder url="file://$MODULE_DIR$/tests/output" isTestSource="true" packagePrefix="Output\" />
       <excludeFolder url="file://$MODULE_DIR$/tests/dist" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/vimeo/psalm/tests/fixtures/stubs" />
     </content>

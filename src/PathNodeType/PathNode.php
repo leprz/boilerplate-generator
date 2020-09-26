@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Leprz\Generator\PathNodeType;
+namespace Leprz\Boilerplate\PathNodeType;
 
 /**
- * @package Leprz\Generator\PathNodeType
+ * @package Leprz\Boilerplate\PathNodeType
  */
 abstract class PathNode
 {
@@ -15,7 +15,7 @@ abstract class PathNode
     protected string $name;
 
     /**
-     * @var \Leprz\Generator\PathNodeType\PathNode|null
+     * @var \Leprz\Boilerplate\PathNodeType\PathNode|null
      */
     protected ?PathNode $parent = null;
 
@@ -25,7 +25,7 @@ abstract class PathNode
     }
 
     /**
-     * @return \Leprz\Generator\PathNodeType\PathNode[]
+     * @return \Leprz\Boilerplate\PathNodeType\PathNode[]
      */
     protected function generateChain(): array
     {
