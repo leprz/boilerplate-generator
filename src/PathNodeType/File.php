@@ -20,7 +20,7 @@ class File extends PathNode
      */
     public function __construct(string $name, string $extension)
     {
-        $this->name = $name;
+        parent::__construct($name);
         $this->extension = $extension;
     }
 
@@ -34,6 +34,7 @@ class File extends PathNode
 
     /**
      * @return string
+     * @codeCoverageIgnore
      */
     public function getExtension(): string
     {

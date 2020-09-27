@@ -9,11 +9,4 @@ namespace Leprz\Boilerplate\PathNodeType;
  */
 class PhpInterface extends PhpClass
 {
-    /**
-     * @return string
-     */
-    public function getClassName(): string
-    {
-        return $this->name;
-    }
 }

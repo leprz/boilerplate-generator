@@ -17,12 +17,12 @@ use PhpParser\Comment\Doc;
 /**
  * @package Leprz\Boilerplate\Builder
  */
-class ClassContentBuilder
+class PhpFileContentBuilder
 {
     /**
-     * @var \Leprz\Boilerplate\Builder\ClassMetadataBuilder
+     * @var \Leprz\Boilerplate\Builder\PhpClassMetadataBuilder
      */
-    private ClassMetadataBuilder $classMetadataBuilder;
+    private PhpClassMetadataBuilder $classMetadataBuilder;
 
     /**
      * @var \Nette\PhpGenerator\PsrPrinter
@@ -30,10 +30,10 @@ class ClassContentBuilder
     private PsrPrinter $psrPrinter;
 
     /**
-     * @param \Leprz\Boilerplate\Builder\ClassMetadataBuilder $classMetadataBuilder
+     * @param \Leprz\Boilerplate\Builder\PhpClassMetadataBuilder $classMetadataBuilder
      */
     public function __construct(
-        ClassMetadataBuilder $classMetadataBuilder
+        PhpClassMetadataBuilder $classMetadataBuilder
     ) {
         $this->psrPrinter = new PsrPrinter();
         $this->classMetadataBuilder = $classMetadataBuilder;
@@ -158,7 +158,7 @@ class ClassContentBuilder
             ->addMethod($phpClassMethod->getName())
             ->setVisibility($phpClassMethod->getVisibility());
 
-        $method->setParameters($this->toParameters($phpClassMethod, $method));
+        $method->setParameters($this->toParameters($phpClassMethod, $method, $namespace));
 
         $this->addReturnType($phpClassMethod, $method, $namespace);
 
@@ -168,11 +168,13 @@ class ClassContentBuilder
     /**
      * @param \Leprz\Boilerplate\PathNodeType\Method $phpClassMethod
      * @param \Nette\PhpGenerator\Method $method
+     * @param \Nette\PhpGenerator\PhpNamespace|null $namespace
      * @return \Nette\PhpGenerator\Parameter[]
      */
     private function toParameters(
         \Leprz\Boilerplate\PathNodeType\Method $phpClassMethod,
-        Method $method
+        Method $method,
+        ?PhpNamespace $namespace = null
     ): array {
         $parameters = [];
         $phpClassParameters = $phpClassMethod->getParameters();
@@ -183,6 +185,10 @@ class ClassContentBuilder
             if ($phpClassParameterType = $phpClassParameter->getType()) {
                 if ($phpClassParameterType instanceof PhpClass) {
                     $parameterTypeClassName = $this->classMetadataBuilder->buildUse($phpClassParameterType);
+
+                    if ($namespace) {
+                        $namespace->addUse($parameterTypeClassName);
+                    }
 
                     $method->addComment((string)new Doc(sprintf('@param \%s', $parameterTypeClassName)));
                     $parameter->setType($parameterTypeClassName);

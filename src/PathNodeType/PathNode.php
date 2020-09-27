@@ -14,6 +14,12 @@ abstract class PathNode
      */
     protected string $name;
 
+    public function __construct(string $name)
+    {
+        $this->name = $name;
+    }
+
+
     /**
      * @var \Leprz\Boilerplate\PathNodeType\PathNode|null
      */

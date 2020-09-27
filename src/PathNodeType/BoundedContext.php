@@ -10,16 +10,9 @@ namespace Leprz\Boilerplate\PathNodeType;
 class BoundedContext extends PathNode
 {
     /**
-     * @param string $name
-     */
-    public function __construct(string $name)
-    {
-        $this->name = $name;
-    }
-
-    /**
      * @param \Leprz\Boilerplate\PathNodeType\Layer $layer
      * @return \Leprz\Boilerplate\PathNodeType\Layer
+     * @codeCoverageIgnore
      */
     public function addLayer(Layer $layer): Layer
     {
@@ -30,6 +23,7 @@ class BoundedContext extends PathNode
 
     /**
      * @param \Leprz\Boilerplate\PathNodeType\PathNode $parent
+     * @codeCoverageIgnore
      */
     protected function setParent(PathNode $parent): void
     {

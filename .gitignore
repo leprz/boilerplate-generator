@@ -2,3 +2,5 @@ vendor
 tests/output
 .phpunit.result.cache
 /.idea/workspace.xml
+coverage
+/.phpunit.cache/

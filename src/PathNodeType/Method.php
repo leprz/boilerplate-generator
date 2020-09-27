@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Leprz\Boilerplate\PathNodeType;
 
+use InvalidArgumentException;
+
 /**
  * @package Leprz\Boilerplate\PathNodeType
  */
@@ -39,12 +41,19 @@ class Method
     {
         $this->name = $name;
         $this->returnType = $returnType;
+
+        $this->validateParameters($params);
+
         $this->parameters = $params;
+
+        $this->validateVisibility($visibility);
+
         $this->visibility = $visibility;
     }
 
     /**
      * @return string
+     * @codeCoverageIgnore
      */
     public function getName(): string
     {
@@ -53,6 +62,7 @@ class Method
 
     /**
      * @return string|\Leprz\Boilerplate\PathNodeType\PhpClass
+     * @codeCoverageIgnore
      */
     public function getReturnType()
     {
@@ -61,6 +71,7 @@ class Method
 
     /**
      * @return \Leprz\Boilerplate\PathNodeType\Parameter[]
+     * @codeCoverageIgnore
      */
     public function getParameters(): array
     {
@@ -73,5 +84,32 @@ class Method
     public function getVisibility(): string
     {
         return $this->visibility;
+    }
+
+    /**
+     * @param array $params
+     */
+    private function validateParameters(array $params): void
+    {
+        foreach ($params as $param) {
+            if (!($param instanceof Parameter)) {
+                throw new InvalidArgumentException(sprintf('Method parameter must be type %s', Parameter::class));
+            }
+        }
+    }
+
+    private function validateVisibility(string $visibility): void
+    {
+        $visibilityParts = explode(' ', $visibility);
+
+        if (in_array('final', $visibilityParts) && in_array('abstract', $visibilityParts)) {
+            throw new InvalidArgumentException('Can not use abstract and final for visibility');
+        }
+
+        foreach ($visibilityParts as $visibilityPart) {
+            if (!in_array($visibilityPart, ['final', 'private', 'public', 'static', 'abstract'])) {
+                throw new InvalidArgumentException('Invalid method visibility ' . $visibility);
+            }
+        }
     }
 }

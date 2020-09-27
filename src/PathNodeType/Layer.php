@@ -11,21 +11,26 @@ use InvalidArgumentException;
  */
 class Layer extends PathNode
 {
+    private const LAYER_INFRASTRUCTURE = 'Infrastructure';
+    private const LAYER_APPLICATION = 'Application';
+    private const LAYER_DOMAIN = 'Domain';
+
     /**
      * @param string $name
      */
     public function __construct(string $name)
     {
-        if (!in_array($name, ['Infrastructure', 'Application', 'Domain'])) {
+        if (!in_array($name, [self::LAYER_INFRASTRUCTURE, self::LAYER_APPLICATION, self::LAYER_DOMAIN])) {
             throw new InvalidArgumentException(sprintf('Not recognized layer: %s', $name));
         }
 
-        $this->name = $name;
+        parent::__construct($name);
     }
 
     /**
      * @param \Leprz\Boilerplate\PathNodeType\Folder $folder
      * @return \Leprz\Boilerplate\PathNodeType\Folder
+     * @codeCoverageIgnore
      */
     public function addFolder(Folder $folder): Folder
     {
@@ -37,6 +42,7 @@ class Layer extends PathNode
     /**
      * @param \Leprz\Boilerplate\PathNodeType\File $class
      * @return \Leprz\Boilerplate\PathNodeType\File
+     * @codeCoverageIgnore
      */
     public function addClass(File $class): File
     {

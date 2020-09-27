@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace Leprz\Boilerplate;
 
-use Leprz\Boilerplate\Builder\ClassContentBuilder;
+use Leprz\Boilerplate\Builder\PhpFileContentBuilder;
 use Leprz\Boilerplate\Builder\FileBuilder;
-use Leprz\Boilerplate\Builder\ClassMetadataBuilder;
 use Leprz\Boilerplate\PathNodeType\File;
 use Leprz\Boilerplate\PathNodeType\Method;
 use Leprz\Boilerplate\PathNodeType\PhpClass;
 use Leprz\Boilerplate\PathNodeType\PhpFile;
-use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * @package Leprz\Boilerplate
@@ -24,24 +22,17 @@ class Generator
     private FileBuilder $fileBuilder;
 
     /**
-     * @var \Leprz\Boilerplate\Builder\ClassMetadataBuilder
+     * @var \Leprz\Boilerplate\Builder\PhpFileContentBuilder
      */
-    private ClassMetadataBuilder $namespaceBuilder;
+    private PhpFileContentBuilder $phpFileContentBuilder;
 
     /**
-     * @var \Leprz\Boilerplate\Builder\ClassContentBuilder
-     */
-    private ClassContentBuilder $classContentBuilder;
-
-    /**
-     * @param \Symfony\Component\Filesystem\Filesystem $filesystem
      * @param \Leprz\Boilerplate\Configuration $configuration
      */
-    public function __construct(Filesystem $filesystem, Configuration $configuration)
+    public function __construct(Configuration $configuration)
     {
-        $this->fileBuilder = new FileBuilder($configuration->getAppSrc(), $filesystem);
-        $this->namespaceBuilder = new ClassMetadataBuilder($configuration->getAppPrefix());
-        $this->classContentBuilder = new ClassContentBuilder($this->namespaceBuilder);
+        $this->fileBuilder = $configuration->getFileBuilder();
+        $this->phpFileContentBuilder = $configuration->getPhpFileContentBuilder();
     }
 
     /**
@@ -51,7 +42,7 @@ class Generator
     public function generate(File $file): string
     {
         if ($file instanceof PhpFile) {
-            return $this->fileBuilder->createFile($file, $this->classContentBuilder->build($file));
+            return $this->fileBuilder->createFile($file, $this->phpFileContentBuilder->build($file));
         }
 
         return $this->fileBuilder->createFile($file, '');
@@ -65,6 +56,6 @@ class Generator
      */
     public function appendMethod(PhpClass $file, Method $method): string
     {
-        return $this->fileBuilder->appendToFile($file, $this->classContentBuilder->buildMethod($method));
+        return $this->fileBuilder->appendToFile($file, $this->phpFileContentBuilder->buildMethod($method));
     }
 }

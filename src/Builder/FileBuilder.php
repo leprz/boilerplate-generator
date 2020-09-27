@@ -30,6 +30,7 @@ class FileBuilder
      */
     public function __construct(string $src, Filesystem $filesystem)
     {
+        //TODO src must have trailing slash at the end
         $this->src = $src;
         $this->filesystem = $filesystem;
     }

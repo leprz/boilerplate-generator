@@ -10,7 +10,7 @@ use Leprz\Boilerplate\PathNodeType\PhpClass;
 /**
  * @package Leprz\Boilerplate\PathNodeType
  */
-class ClassMetadataBuilder
+class PhpClassMetadataBuilder
 {
     /**
      * @var string
@@ -62,6 +62,10 @@ class ClassMetadataBuilder
      */
     private function concatChunksIntoNamespace(array $chain): string
     {
+        if (empty($chain)) {
+            return $this->appPrefix;
+        }
+
         $chainOfStrings = array_map(
             static function (PathNode $item) {
                 return (string)$item;
