@@ -3,6 +3,7 @@
 @leprz/boilerplate-generator
 =========================
 ![example workflow name](https://github.com/leprz/php-code-generator/workflows/Build/badge.svg)
+[![codecov](https://codecov.io/gh/leprz/boilerplate-generator/branch/master/graph/badge.svg)](https://codecov.io/gh/leprz/boilerplate-generator)
 
 Introduction
 ------------
@@ -25,10 +26,9 @@ Code
 ```php
 /** @var \Leprz\Boilerplate\Generator $generator */
 $generator = new Generator(
-    new Filesystem(),
     new Configuration(
         'AppPrefix',
-        'src'
+        'src/'
     )
 );
 

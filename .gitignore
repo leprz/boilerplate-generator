@@ -4,3 +4,4 @@ tests/output
 /.idea/workspace.xml
 coverage
 /.phpunit.cache/
+/coverage.xml
