@@ -1,5 +1,12 @@
 <?php
 
+/*
+ *
+ * This file is part of leprz/boilerplate-generator
+ *
+ * Copyright (c) 2020. Przemek Łęczycki <leczycki.przemyslaw@gmail.com>
+ */
+
 declare(strict_types=1);
 
 namespace Leprz\Boilerplate;
@@ -56,7 +63,7 @@ class Configuration
         $this->filesystem = new Filesystem();
         $this->fileBuilder = new FileBuilder($this->appSrc, $this->filesystem);
         $this->phpClassMetadataBuilder = new PhpClassMetadataBuilder($this->appPrefix);
-        $this->phpFileContentBuilder =  new PhpFileContentBuilder($this->phpClassMetadataBuilder);
+        $this->phpFileContentBuilder = new PhpFileContentBuilder($this->phpClassMetadataBuilder);
     }
 
     /**
