@@ -44,7 +44,7 @@ class PhpMethod
      * @param string $returnType
      * @param \Leprz\Boilerplate\PathNode\Php\PhpParameter[] $params
      */
-    public function __construct(string $name, string $visibility = 'public', $returnType = 'void', $params = [])
+    public function __construct(string $name, string $visibility = 'public', $returnType = '', $params = [])
     {
         $this->name = $name;
         $this->returnType = $returnType;
