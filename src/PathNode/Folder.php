@@ -2,16 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Leprz\Boilerplate\PathNodeType;
+namespace Leprz\Boilerplate\PathNode;
+
+use Leprz\Boilerplate\PathNode\Php\PhpClass;
+use Leprz\Boilerplate\PathNode\Php\PhpFile;
+use Leprz\Boilerplate\PathNode\Php\PhpInterface;
 
 /**
- * @package Leprz\Boilerplate\PathNodeType
+ * @package Leprz\Boilerplate\PathNode
  */
 class Folder extends PathNode
 {
     /**
-     * @param \Leprz\Boilerplate\PathNodeType\Folder $folder
-     * @return \Leprz\Boilerplate\PathNodeType\Folder
+     * @param \Leprz\Boilerplate\PathNode\Folder $folder
+     * @return \Leprz\Boilerplate\PathNode\Folder
      * @codeCoverageIgnore
      */
     public function addFolder(Folder $folder): Folder
@@ -22,8 +26,8 @@ class Folder extends PathNode
     }
 
     /**
-     * @param \Leprz\Boilerplate\PathNodeType\File $file
-     * @return \Leprz\Boilerplate\PathNodeType\File
+     * @param \Leprz\Boilerplate\PathNode\File $file
+     * @return \Leprz\Boilerplate\PathNode\File
      * @codeCoverageIgnore
      */
     public function addFile(File $file): File
@@ -34,8 +38,8 @@ class Folder extends PathNode
     }
 
     /**
-     * @param \Leprz\Boilerplate\PathNodeType\PhpFile $file
-     * @return \Leprz\Boilerplate\PathNodeType\PhpFile
+     * @param \Leprz\Boilerplate\PathNode\Php\PhpFile $file
+     * @return \Leprz\Boilerplate\PathNode\Php\PhpFile
      * @codeCoverageIgnore
      */
     public function addPhpFile(PhpFile $file): PhpFile
@@ -46,8 +50,8 @@ class Folder extends PathNode
     }
 
     /**
-     * @param \Leprz\Boilerplate\PathNodeType\PhpClass $class
-     * @return \Leprz\Boilerplate\PathNodeType\PhpClass
+     * @param \Leprz\Boilerplate\PathNode\Php\PhpClass $class
+     * @return \Leprz\Boilerplate\PathNode\Php\PhpClass
      * @codeCoverageIgnore
      */
     public function addPhpClass(PhpClass $class): PhpClass
@@ -58,8 +62,8 @@ class Folder extends PathNode
     }
 
     /**
-     * @param \Leprz\Boilerplate\PathNodeType\PhpInterface $interface
-     * @return \Leprz\Boilerplate\PathNodeType\PhpInterface
+     * @param \Leprz\Boilerplate\PathNode\Php\PhpInterface $interface
+     * @return \Leprz\Boilerplate\PathNode\Php\PhpInterface
      * @codeCoverageIgnore
      */
     public function addPhpInterface(PhpInterface $interface): PhpInterface

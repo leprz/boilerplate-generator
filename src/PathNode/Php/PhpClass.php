@@ -2,31 +2,37 @@
 
 declare(strict_types=1);
 
-namespace Leprz\Boilerplate\PathNodeType;
+namespace Leprz\Boilerplate\PathNode\Php;
 
 /**
- * @package Leprz\Boilerplate\PathNodeType
+ * @package Leprz\Boilerplate\PathNode\Php
  */
 class PhpClass extends PhpFile
 {
     /**
-     * @var \Leprz\Boilerplate\PathNodeType\PhpClass|null
+     * @var \Leprz\Boilerplate\PathNode\Php\PhpClass|null
      */
     private ?PhpClass $extends = null;
 
     /**
-     * @var \Leprz\Boilerplate\PathNodeType\PhpInterface[]
+     * @var \Leprz\Boilerplate\PathNode\Php\PhpInterface[]
      */
     private array $implements = [];
 
     /**
      * @return string
+     * @codeCoverageIgnore
      */
     public function getClassName(): string
     {
         return $this->name;
     }
 
+    /**
+     * @param \Leprz\Boilerplate\PathNode\Php\PhpClass $phpClass
+     * @return $this
+     * @codeCoverageIgnore
+     */
     public function extends(self $phpClass): self
     {
         $this->extends = $phpClass;
@@ -35,8 +41,9 @@ class PhpClass extends PhpFile
     }
 
     /**
-     * @param \Leprz\Boilerplate\PathNodeType\PhpInterface ...$phpInterface
+     * @param \Leprz\Boilerplate\PathNode\Php\PhpInterface ...$phpInterface
      * @return $this
+     * @codeCoverageIgnore
      */
     public function implements(PhpInterface ...$phpInterface): self
     {
@@ -46,7 +53,8 @@ class PhpClass extends PhpFile
     }
 
     /**
-     * @return \Leprz\Boilerplate\PathNodeType\PhpClass|null
+     * @return \Leprz\Boilerplate\PathNode\Php\PhpClass|null
+     * @codeCoverageIgnore
      */
     public function getExtends(): ?PhpClass
     {
@@ -54,7 +62,8 @@ class PhpClass extends PhpFile
     }
 
     /**
-     * @return \Leprz\Boilerplate\PathNodeType\PhpInterface[]
+     * @return \Leprz\Boilerplate\PathNode\Php\PhpInterface[]
+     * @codeCoverageIgnore
      */
     public function getImplements(): array
     {

@@ -6,25 +6,25 @@ namespace Tests\Builder;
 
 use Leprz\Boilerplate\Builder\PhpClassMetadataBuilder;
 use Leprz\Boilerplate\Builder\PhpFileContentBuilder;
-use Leprz\Boilerplate\PathNodeType\Folder;
-use Leprz\Boilerplate\PathNodeType\Method;
-use Leprz\Boilerplate\PathNodeType\Parameter;
-use Leprz\Boilerplate\PathNodeType\PhpClass;
-use Leprz\Boilerplate\PathNodeType\PhpFile;
-use Leprz\Boilerplate\PathNodeType\PhpInterface;
+use Leprz\Boilerplate\PathNode\Folder;
+use Leprz\Boilerplate\PathNode\Php\PhpMethod;
+use Leprz\Boilerplate\PathNode\Php\PhpParameter;
+use Leprz\Boilerplate\PathNode\Php\PhpClass;
+use Leprz\Boilerplate\PathNode\Php\PhpFile;
+use Leprz\Boilerplate\PathNode\Php\PhpInterface;
 use Tests\UnitTestCase;
 
 /**
  * @covers \Leprz\Boilerplate\Builder\PhpFileContentBuilder
  * @uses   \Leprz\Boilerplate\Builder\PhpClassMetadataBuilder
- * @uses   \Leprz\Boilerplate\PathNodeType\File
- * @uses   \Leprz\Boilerplate\PathNodeType\PathNode
- * @uses   \Leprz\Boilerplate\PathNodeType\PhpClass
- * @uses   \Leprz\Boilerplate\PathNodeType\PhpFile
- * @uses   \Leprz\Boilerplate\PathNodeType\Method
- * @uses   \Leprz\Boilerplate\PathNodeType\PhpInterface
- * @uses   \Leprz\Boilerplate\PathNodeType\Parameter
- * @uses   \Leprz\Boilerplate\PathNodeType\Folder
+ * @uses   \Leprz\Boilerplate\PathNode\File
+ * @uses   \Leprz\Boilerplate\PathNode\PathNode
+ * @uses   \Leprz\Boilerplate\PathNode\Php\PhpClass
+ * @uses   \Leprz\Boilerplate\PathNode\Php\PhpFile
+ * @uses   \Leprz\Boilerplate\PathNode\Php\PhpMethod
+ * @uses   \Leprz\Boilerplate\PathNode\Php\PhpInterface
+ * @uses   \Leprz\Boilerplate\PathNode\Php\PhpParameter
+ * @uses   \Leprz\Boilerplate\PathNode\Folder
  */
 class PhpFileContentBuilderTest extends UnitTestCase
 {
@@ -57,7 +57,7 @@ class PhpFileContentBuilderTest extends UnitTestCase
     {
         $phpFileContent = $this->phpFileContentBuilder->build(
             (new PhpClass('TestClass'))
-                ->addMethod(new Method('test', 'public', 'string'))
+                ->addMethod(new PhpMethod('test', 'public', 'string'))
         );
 
         $this->assertStringContainsString(
@@ -75,7 +75,7 @@ class PhpFileContentBuilderTest extends UnitTestCase
 
         $phpFileContent = $this->phpFileContentBuilder->build(
             (new PhpClass('TestClass'))
-                ->addMethod(new Method('test', 'public', $returnType))
+                ->addMethod(new PhpMethod('test', 'public', $returnType))
         );
 
         $this->assertStringContainsString(
@@ -94,12 +94,12 @@ class PhpFileContentBuilderTest extends UnitTestCase
         $phpFileContent = $this->phpFileContentBuilder->build(
             (new PhpClass('TestClass'))
                 ->addMethod(
-                    new Method(
+                    new PhpMethod(
                         'test',
                         'public',
                         'string',
                         [
-                            new Parameter('test', 'string')
+                            new PhpParameter('test', 'string')
                         ]
                     )
                 )
@@ -116,12 +116,12 @@ class PhpFileContentBuilderTest extends UnitTestCase
         $phpFileContent = $this->phpFileContentBuilder->build(
             (new PhpClass('TestClass'))
                 ->addMethod(
-                    new Method(
+                    new PhpMethod(
                         'test',
                         'public',
                         'string',
                         [
-                            new Parameter(
+                            new PhpParameter(
                                 'test',
                                 (new Folder('Test'))->addPhpClass(new PhpClass('ParameterType'))
                             )
@@ -155,7 +155,7 @@ class PhpFileContentBuilderTest extends UnitTestCase
     {
         $phpFileContent = $this->phpFileContentBuilder->build(
             (new PhpInterface('TestInterface'))
-                ->addMethod(new Method('test', 'public', 'string'))
+                ->addMethod(new PhpMethod('test', 'public', 'string'))
         );
 
         $this->assertStringContainsString('public function test(): string;', $phpFileContent);

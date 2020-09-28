@@ -61,6 +61,7 @@ class Configuration
 
     /**
      * @return string
+     * @codeCoverageIgnore
      */
     public function getAppPrefix(): string
     {
@@ -69,22 +70,35 @@ class Configuration
 
     /**
      * @return string
+     * @codeCoverageIgnore
      */
     public function getAppSrc(): string
     {
         return $this->appSrc;
     }
 
+    /**
+     * @return \Leprz\Boilerplate\Builder\FileBuilder
+     * @codeCoverageIgnore
+     */
     public function getFileBuilder(): FileBuilder
     {
         return $this->fileBuilder;
     }
 
+    /**
+     * @return \Leprz\Boilerplate\Builder\PhpClassMetadataBuilder
+     * @codeCoverageIgnore
+     */
     public function getPhpClassMetadataBuilder(): PhpClassMetadataBuilder
     {
         return $this->phpClassMetadataBuilder;
     }
 
+    /**
+     * @return \Leprz\Boilerplate\Builder\PhpFileContentBuilder
+     * @codeCoverageIgnore
+     */
     public function getPhpFileContentBuilder(): PhpFileContentBuilder
     {
         return $this->phpFileContentBuilder;

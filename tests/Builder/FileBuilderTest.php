@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace Tests\Builder;
 
 use Leprz\Boilerplate\Builder\FileBuilder;
-use Leprz\Boilerplate\PathNodeType\File;
-use Leprz\Boilerplate\PathNodeType\Folder;
+use Leprz\Boilerplate\PathNode\File;
+use Leprz\Boilerplate\PathNode\Folder;
 use Symfony\Component\Filesystem\Filesystem;
 use Tests\UnitTestCase;
 
 /**
  * @package Tests\Builder
  * @covers \Leprz\Boilerplate\Builder\FileBuilder
- * @uses \Leprz\Boilerplate\PathNodeType\Folder
- * @uses \Leprz\Boilerplate\PathNodeType\File
- * @uses \Leprz\Boilerplate\PathNodeType\PathNode
+ * @uses \Leprz\Boilerplate\PathNode\Folder
+ * @uses \Leprz\Boilerplate\PathNode\File
+ * @uses \Leprz\Boilerplate\PathNode\PathNode
  */
 class FileBuilderTest extends UnitTestCase
 {

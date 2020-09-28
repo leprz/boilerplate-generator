@@ -6,10 +6,10 @@ namespace Leprz\Boilerplate;
 
 use Leprz\Boilerplate\Builder\PhpFileContentBuilder;
 use Leprz\Boilerplate\Builder\FileBuilder;
-use Leprz\Boilerplate\PathNodeType\File;
-use Leprz\Boilerplate\PathNodeType\Method;
-use Leprz\Boilerplate\PathNodeType\PhpClass;
-use Leprz\Boilerplate\PathNodeType\PhpFile;
+use Leprz\Boilerplate\PathNode\File;
+use Leprz\Boilerplate\PathNode\Php\PhpMethod;
+use Leprz\Boilerplate\PathNode\Php\PhpClass;
+use Leprz\Boilerplate\PathNode\Php\PhpFile;
 
 /**
  * @package Leprz\Boilerplate
@@ -36,7 +36,7 @@ class Generator
     }
 
     /**
-     * @param \Leprz\Boilerplate\PathNodeType\File $file
+     * @param \Leprz\Boilerplate\PathNode\File $file
      * @return string file path
      */
     public function generate(File $file): string
@@ -49,12 +49,12 @@ class Generator
     }
 
     /**
-     * @param \Leprz\Boilerplate\PathNodeType\PhpClass $file
-     * @param \Leprz\Boilerplate\PathNodeType\Method $method
+     * @param \Leprz\Boilerplate\PathNode\Php\PhpClass $file
+     * @param \Leprz\Boilerplate\PathNode\Php\PhpMethod $method
      * @return string
      * @throws \Leprz\Boilerplate\Exception\ClassContentMalformedException
      */
-    public function appendMethod(PhpClass $file, Method $method): string
+    public function appendMethod(PhpClass $file, PhpMethod $method): string
     {
         return $this->fileBuilder->appendToFile($file, $this->phpFileContentBuilder->buildMethod($method));
     }

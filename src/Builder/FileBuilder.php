@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Leprz\Boilerplate\Builder;
 
 use Leprz\Boilerplate\Exception\ClassContentMalformedException;
-use Leprz\Boilerplate\PathNodeType\File;
-use Leprz\Boilerplate\PathNodeType\PhpClass;
+use Leprz\Boilerplate\PathNode\File;
+use Leprz\Boilerplate\PathNode\Php\PhpClass;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -36,7 +36,7 @@ class FileBuilder
     }
 
     /**
-     * @param \Leprz\Boilerplate\PathNodeType\File $file
+     * @param \Leprz\Boilerplate\PathNode\File $file
      * @return string
      */
     public function buildFilePath(File $file): string
@@ -47,7 +47,7 @@ class FileBuilder
     }
 
     /**
-     * @param \Leprz\Boilerplate\PathNodeType\File $file
+     * @param \Leprz\Boilerplate\PathNode\File $file
      * @param string $content
      * @return string
      */
@@ -61,7 +61,7 @@ class FileBuilder
     }
 
     /**
-     * @param \Leprz\Boilerplate\PathNodeType\PhpClass $file
+     * @param \Leprz\Boilerplate\PathNode\Php\PhpClass $file
      * @param string $methodContent
      * @return string
      * @throws \Leprz\Boilerplate\Exception\ClassContentMalformedException

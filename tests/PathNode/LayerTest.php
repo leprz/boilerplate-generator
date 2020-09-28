@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Tests\PathNodeType;
+namespace Tests\PathNode;
 
 use InvalidArgumentException;
-use Leprz\Boilerplate\PathNodeType\Layer;
+use Leprz\Boilerplate\PathNode\Layer;
 use Tests\UnitTestCase;
 
 /**
  * @package Tests\PathNodeType
- * @covers \Leprz\Boilerplate\PathNodeType\Layer
- * @uses \Leprz\Boilerplate\PathNodeType\PathNode
+ * @covers \Leprz\Boilerplate\PathNode\Layer
+ * @uses \Leprz\Boilerplate\PathNode\PathNode
  */
 class LayerTest extends UnitTestCase
 {

@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Leprz\Boilerplate\Builder;
 
-use Leprz\Boilerplate\PathNodeType\PhpClass;
-use Leprz\Boilerplate\PathNodeType\PhpFile;
-use Leprz\Boilerplate\PathNodeType\PhpInterface;
+use Leprz\Boilerplate\PathNode\Php\PhpClass;
+use Leprz\Boilerplate\PathNode\Php\PhpFile;
+use Leprz\Boilerplate\PathNode\Php\PhpInterface;
+use Leprz\Boilerplate\PathNode\Php\PhpMethod;
 use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\Method;
 use Nette\PhpGenerator\PhpFile as PhpFileGen;
@@ -40,7 +41,7 @@ class PhpFileContentBuilder
     }
 
     /**
-     * @param \Leprz\Boilerplate\PathNodeType\PhpFile $phpFile
+     * @param \Leprz\Boilerplate\PathNode\Php\PhpFile $phpFile
      * @return string
      */
     public function build(PhpFile $phpFile): string
@@ -73,11 +74,11 @@ class PhpFileContentBuilder
     }
 
     /**
-     * @param \Leprz\Boilerplate\PathNodeType\Method $phpMethod
+     * @param \Leprz\Boilerplate\PathNode\Php\PhpMethod $phpMethod
      * @return string
      * @throws \Nette\InvalidStateException
      */
-    public function buildMethod(\Leprz\Boilerplate\PathNodeType\Method $phpMethod): string
+    public function buildMethod(PhpMethod $phpMethod): string
     {
         $method = new Method($phpMethod->getName());
         $method
@@ -105,7 +106,7 @@ class PhpFileContentBuilder
     }
 
     /**
-     * @param \Leprz\Boilerplate\PathNodeType\PhpClass $phpClass
+     * @param \Leprz\Boilerplate\PathNode\Php\PhpClass $phpClass
      * @param \Nette\PhpGenerator\PhpNamespace $namespace
      * @return \Nette\PhpGenerator\ClassType
      */
@@ -135,7 +136,7 @@ class PhpFileContentBuilder
     }
 
     /**
-     * @param \Leprz\Boilerplate\PathNodeType\PhpClass $phpClass
+     * @param \Leprz\Boilerplate\PathNode\Php\PhpClass $phpClass
      * @return \Nette\PhpGenerator\PhpNamespace
      */
     private function toNamespace(PhpClass $phpClass): PhpNamespace
@@ -144,13 +145,13 @@ class PhpFileContentBuilder
     }
 
     /**
-     * @param \Leprz\Boilerplate\PathNodeType\Method $phpClassMethod
+     * @param \Leprz\Boilerplate\PathNode\Php\PhpMethod $phpClassMethod
      * @param \Nette\PhpGenerator\ClassType $class
      * @param \Nette\PhpGenerator\PhpNamespace|null $namespace
      * @return \Nette\PhpGenerator\Method
      */
     private function addMethod(
-        \Leprz\Boilerplate\PathNodeType\Method $phpClassMethod,
+        PhpMethod $phpClassMethod,
         ClassType $class,
         ?PhpNamespace $namespace = null
     ): Method {
@@ -166,13 +167,13 @@ class PhpFileContentBuilder
     }
 
     /**
-     * @param \Leprz\Boilerplate\PathNodeType\Method $phpClassMethod
+     * @param \Leprz\Boilerplate\PathNode\Php\PhpMethod $phpClassMethod
      * @param \Nette\PhpGenerator\Method $method
      * @param \Nette\PhpGenerator\PhpNamespace|null $namespace
      * @return \Nette\PhpGenerator\Parameter[]
      */
     private function toParameters(
-        \Leprz\Boilerplate\PathNodeType\Method $phpClassMethod,
+        PhpMethod $phpClassMethod,
         Method $method,
         ?PhpNamespace $namespace = null
     ): array {
@@ -206,12 +207,12 @@ class PhpFileContentBuilder
     }
 
     /**
-     * @param \Leprz\Boilerplate\PathNodeType\Method $phpClassMethod
+     * @param \Leprz\Boilerplate\PathNode\Php\PhpMethod $phpClassMethod
      * @param \Nette\PhpGenerator\Method $method
      * @param \Nette\PhpGenerator\PhpNamespace|null $namespace
      */
     private function addReturnType(
-        \Leprz\Boilerplate\PathNodeType\Method $phpClassMethod,
+        PhpMethod $phpClassMethod,
         Method $method,
         ?PhpNamespace $namespace = null
     ): void {

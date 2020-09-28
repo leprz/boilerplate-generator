@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Leprz\Boilerplate\PathNodeType;
+namespace Leprz\Boilerplate\PathNode;
 
 /**
- * @package Leprz\Boilerplate\PathNodeType
+ * @package Leprz\Boilerplate\PathNode
  */
 abstract class PathNode
 {
@@ -21,7 +21,7 @@ abstract class PathNode
 
 
     /**
-     * @var \Leprz\Boilerplate\PathNodeType\PathNode|null
+     * @var \Leprz\Boilerplate\PathNode\PathNode|null
      */
     protected ?PathNode $parent = null;
 
@@ -31,7 +31,7 @@ abstract class PathNode
     }
 
     /**
-     * @return \Leprz\Boilerplate\PathNodeType\PathNode[]
+     * @return \Leprz\Boilerplate\PathNode\PathNode[]
      */
     protected function generateChain(): array
     {
@@ -44,6 +44,7 @@ abstract class PathNode
 
     /**
      * @return string
+     * @codeCoverageIgnore
      */
     public function __toString(): string
     {

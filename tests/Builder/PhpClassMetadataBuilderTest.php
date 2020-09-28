@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace Tests\Builder;
 
 use Leprz\Boilerplate\Builder\PhpClassMetadataBuilder;
-use Leprz\Boilerplate\PathNodeType\Folder;
-use Leprz\Boilerplate\PathNodeType\PhpClass;
+use Leprz\Boilerplate\PathNode\Folder;
+use Leprz\Boilerplate\PathNode\Php\PhpClass;
 use Tests\UnitTestCase;
 
 /**
  * @package Tests\Builder
  * @covers \Leprz\Boilerplate\Builder\PhpClassMetadataBuilder
- * @uses \Leprz\Boilerplate\PathNodeType\PhpClass
- * @uses \Leprz\Boilerplate\PathNodeType\Folder
- * @uses \Leprz\Boilerplate\PathNodeType\File
- * @uses \Leprz\Boilerplate\PathNodeType\PathNode
- * @uses \Leprz\Boilerplate\PathNodeType\PhpFile
+ * @uses \Leprz\Boilerplate\PathNode\Php\PhpFile
+ * @uses \Leprz\Boilerplate\PathNode\Php\PhpClass
+ * @uses \Leprz\Boilerplate\PathNode\Folder
+ * @uses \Leprz\Boilerplate\PathNode\File
+ * @uses \Leprz\Boilerplate\PathNode\PathNode
  */
 class PhpClassMetadataBuilderTest extends UnitTestCase
 {

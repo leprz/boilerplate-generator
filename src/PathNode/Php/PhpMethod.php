@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Leprz\Boilerplate\PathNodeType;
+namespace Leprz\Boilerplate\PathNode\Php;
 
 use InvalidArgumentException;
 
 /**
- * @package Leprz\Boilerplate\PathNodeType
+ * @package Leprz\Boilerplate\PathNode\Php
  */
-class Method
+class PhpMethod
 {
     /**
      * @var string
@@ -17,12 +17,12 @@ class Method
     private string $name;
 
     /**
-     * @var string|\Leprz\Boilerplate\PathNodeType\PhpClass
+     * @var string|\Leprz\Boilerplate\PathNode\Php\PhpClass
      */
     private $returnType;
 
     /**
-     * @var \Leprz\Boilerplate\PathNodeType\Parameter[]
+     * @var \Leprz\Boilerplate\PathNode\Php\PhpParameter[]
      */
     private array $parameters;
 
@@ -35,7 +35,7 @@ class Method
      * @param string $name
      * @param string $visibility
      * @param string $returnType
-     * @param \Leprz\Boilerplate\PathNodeType\Parameter[] $params
+     * @param \Leprz\Boilerplate\PathNode\Php\PhpParameter[] $params
      */
     public function __construct(string $name, string $visibility = 'public', $returnType = 'void', $params = [])
     {
@@ -61,7 +61,7 @@ class Method
     }
 
     /**
-     * @return string|\Leprz\Boilerplate\PathNodeType\PhpClass
+     * @return string|\Leprz\Boilerplate\PathNode\Php\PhpClass
      * @codeCoverageIgnore
      */
     public function getReturnType()
@@ -70,7 +70,7 @@ class Method
     }
 
     /**
-     * @return \Leprz\Boilerplate\PathNodeType\Parameter[]
+     * @return \Leprz\Boilerplate\PathNode\Php\PhpParameter[]
      * @codeCoverageIgnore
      */
     public function getParameters(): array
@@ -92,8 +92,8 @@ class Method
     private function validateParameters(array $params): void
     {
         foreach ($params as $param) {
-            if (!($param instanceof Parameter)) {
-                throw new InvalidArgumentException(sprintf('Method parameter must be type %s', Parameter::class));
+            if (!($param instanceof PhpParameter)) {
+                throw new InvalidArgumentException(sprintf('Method parameter must be type %s', PhpParameter::class));
             }
         }
     }

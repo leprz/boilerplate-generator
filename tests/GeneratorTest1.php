@@ -7,16 +7,16 @@ namespace Tests;
 use Leprz\Boilerplate\Generator;
 use Leprz\Boilerplate\Configuration;
 use Leprz\Boilerplate\Builder\PhpClassMetadataBuilder;
-use Leprz\Boilerplate\PathNodeType\BoundedContext;
-use Leprz\Boilerplate\PathNodeType\Folder;
-use Leprz\Boilerplate\PathNodeType\File;
-use Leprz\Boilerplate\PathNodeType\Layer;
-use Leprz\Boilerplate\PathNodeType\Method;
-use Leprz\Boilerplate\PathNodeType\PathNode;
-use Leprz\Boilerplate\PathNodeType\Parameter;
-use Leprz\Boilerplate\PathNodeType\PhpClass;
-use Leprz\Boilerplate\PathNodeType\PhpFile;
-use Leprz\Boilerplate\PathNodeType\PhpInterface;
+use Leprz\Boilerplate\PathNode\BoundedContext;
+use Leprz\Boilerplate\PathNode\Folder;
+use Leprz\Boilerplate\PathNode\File;
+use Leprz\Boilerplate\PathNode\Layer;
+use Leprz\Boilerplate\PathNode\Php\PhpMethod;
+use Leprz\Boilerplate\PathNode\PathNode;
+use Leprz\Boilerplate\PathNode\Php\PhpParameter;
+use Leprz\Boilerplate\PathNode\Php\PhpClass;
+use Leprz\Boilerplate\PathNode\Php\PhpFile;
+use Leprz\Boilerplate\PathNode\Php\PhpInterface;
 
 /**
  * @package App\Tests\Shared\Infrastructure\Generator
@@ -24,22 +24,22 @@ use Leprz\Boilerplate\PathNodeType\PhpInterface;
 class GeneratorTest1 extends UnitTestCase
 {
     /**
-     * @var \Leprz\Boilerplate\PathNodeType\PhpClass
+     * @var \Leprz\Boilerplate\PathNode\Php\PhpClass
      */
     private PhpClass $testClass2;
 
     /**
-     * @var \Leprz\Boilerplate\PathNodeType\PhpClass
+     * @var \Leprz\Boilerplate\PathNode\Php\PhpClass
      */
     private PhpClass $testClass1;
 
     /**
-     * @var \Leprz\Boilerplate\PathNodeType\PhpInterface
+     * @var \Leprz\Boilerplate\PathNode\Php\PhpInterface
      */
     private PhpInterface $testInterface1;
 
     /**
-     * @var \Leprz\Boilerplate\PathNodeType\PhpInterface
+     * @var \Leprz\Boilerplate\PathNode\Php\PhpInterface
      */
     private PhpInterface $testInterface2;
 
@@ -100,8 +100,8 @@ class GeneratorTest1 extends UnitTestCase
         $handler = (new Folder('Command'))
             ->addFolder(new Folder('ExampleUseCase'))
             ->addPhpClass(new PhpClass('ExampleHandler'))
-            ->addMethod(new Method('__invoke', 'public', 'void', [
-                new Parameter('command', $command)
+            ->addMethod(new PhpMethod('__invoke', 'public', 'void', [
+                new PhpParameter('command', $command)
             ]));
 
         $this->generator->generate($command);
@@ -117,8 +117,8 @@ class GeneratorTest1 extends UnitTestCase
         $this->generator->generate($this->testClass1);
         $this->generator->generate($this->testClass2);
 
-        $this->generator->appendMethod($this->testClass2, new Method('test', 'public', 'string'));
-        $this->generator->appendMethod($this->testClass2, new Method('test1', 'private', $this->testClass2));
+        $this->generator->appendMethod($this->testClass2, new PhpMethod('test', 'public', 'string'));
+        $this->generator->appendMethod($this->testClass2, new PhpMethod('test1', 'private', $this->testClass2));
 
         $query = (new BoundedContext('Domain'))
             ->addLayer(new Layer('Application'))
@@ -139,8 +139,8 @@ class GeneratorTest1 extends UnitTestCase
             ->addLayer(new Layer('Application'))
             ->addFolder(new Folder('Command'))
             ->addPhpClass(new PhpClass('DoSomethingHandler'))
-            ->addMethod(new Method('handle', 'public', 'void', [
-                new Parameter('command', $command)
+            ->addMethod(new PhpMethod('handle', 'public', 'void', [
+                new PhpParameter('command', $command)
             ]));
 
         $this->generator->generate($handler);
@@ -183,7 +183,7 @@ class GeneratorTest1 extends UnitTestCase
 
         $this->testInterface2 = (new Folder('Sample'))
             ->addPhpInterface(new PhpInterface('TestInterface2'))
-            ->addMethod(new Method('test', 'public', 'string'));
+            ->addMethod(new PhpMethod('test', 'public', 'string'));
 
         $this->testClass2 = (new BoundedContext('Domain'))
             ->addLayer(new Layer('Application'))
@@ -191,10 +191,10 @@ class GeneratorTest1 extends UnitTestCase
             ->addPhpClass(new PhpClass('TestClass2'))
             ->extends($this->testClass1)
             ->implements($this->testInterface1, $this->testInterface2)
-            ->addMethod(new Method('doSomething', 'public', 'void', [
-                new Parameter('testClass1', $this->testClass1),
-                new Parameter('test', 'string')
+            ->addMethod(new PhpMethod('doSomething', 'public', 'void', [
+                new PhpParameter('testClass1', $this->testClass1),
+                new PhpParameter('test', 'string')
             ]))
-            ->addMethod(new Method('doSomethingElse', 'private', $this->testClass1));
+            ->addMethod(new PhpMethod('doSomethingElse', 'private', $this->testClass1));
     }
 }

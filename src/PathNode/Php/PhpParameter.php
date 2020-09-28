@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Leprz\Boilerplate\PathNodeType;
+namespace Leprz\Boilerplate\PathNode\Php;
 
 /**
- * @package Leprz\Boilerplate\PathNodeType
+ * @package Leprz\Boilerplate\PathNode\Php
  */
-class Parameter
+class PhpParameter
 {
     /**
      * @var string
@@ -15,13 +15,14 @@ class Parameter
     private string $name;
 
     /**
-     * @var \Leprz\Boilerplate\PathNodeType\PhpClass|string
+     * @var \Leprz\Boilerplate\PathNode\Php\PhpClass|string
      */
     private $type;
 
     /**
      * @param string $name
-     * @param string|\Leprz\Boilerplate\PathNodeType\PhpClass $type
+     * @param string|\Leprz\Boilerplate\PathNode\Php\PhpClass $type
+     * @codeCoverageIgnore
      */
     public function __construct(string $name, $type)
     {
@@ -31,6 +32,7 @@ class Parameter
 
     /**
      * @return string
+     * @codeCoverageIgnore
      */
     public function getName(): string
     {
@@ -38,7 +40,8 @@ class Parameter
     }
 
     /**
-     * @return \Leprz\Boilerplate\PathNodeType\PhpClass|string
+     * @return \Leprz\Boilerplate\PathNode\Php\PhpClass|string
+     * @codeCoverageIgnore
      */
     public function getType()
     {

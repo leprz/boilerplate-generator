@@ -8,16 +8,16 @@ use Leprz\Boilerplate\Builder\FileBuilder;
 use Leprz\Boilerplate\Builder\PhpFileContentBuilder;
 use Leprz\Boilerplate\Configuration;
 use Leprz\Boilerplate\Generator;
-use Leprz\Boilerplate\PathNodeType\File;
-use Leprz\Boilerplate\PathNodeType\PhpFile;
+use Leprz\Boilerplate\PathNode\File;
+use Leprz\Boilerplate\PathNode\Php\PhpFile;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * @package Tests
  * @covers \Leprz\Boilerplate\Generator
- * @covers \Leprz\Boilerplate\PathNodeType\File
- * @covers \Leprz\Boilerplate\PathNodeType\PhpFile
- * @covers \Leprz\Boilerplate\PathNodeType\PathNode
+ * @covers \Leprz\Boilerplate\PathNode\PathNode
+ * @covers \Leprz\Boilerplate\PathNode\File
+ * @covers \Leprz\Boilerplate\PathNode\Php\PhpFile
  */
 class GeneratorTest extends UnitTestCase
 {

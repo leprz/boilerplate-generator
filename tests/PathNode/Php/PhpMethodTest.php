@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Tests\PathNodeType;
+namespace Tests\PathNode\Php;
 
 use InvalidArgumentException;
-use Leprz\Boilerplate\PathNodeType\Method;
+use Leprz\Boilerplate\PathNode\Php\PhpMethod;
 use Tests\UnitTestCase;
 
 /**
  * @package Tests\PathNodeType
- * @covers \Leprz\Boilerplate\PathNodeType\Method
+ * @covers \Leprz\Boilerplate\PathNode\Php\PhpMethod
  */
-class MethodTest extends UnitTestCase
+class PhpMethodTest extends UnitTestCase
 {
 
     public function test__construct_should_validateParameterType(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
-        new Method('test', 'public', 'void', [
+        new PhpMethod('test', 'public', 'void', [
             'parameter'
         ]);
     }
@@ -28,13 +28,13 @@ class MethodTest extends UnitTestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        new Method('test', 'invalid');
+        new PhpMethod('test', 'invalid');
     }
 
     public function test__construct_should_createMethodWithComplexVisibility(): void
     {
 
-        $method = new Method('test', 'final public static');
+        $method = new PhpMethod('test', 'final public static');
         $this->assertEquals('final public static', $method->getVisibility());
     }
 
@@ -42,6 +42,6 @@ class MethodTest extends UnitTestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        new Method('test', 'abstract final public');
+        new PhpMethod('test', 'abstract final public');
     }
 }

@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Tests\PathNodeType;
+namespace Tests\PathNode;
 
-use Leprz\Boilerplate\PathNodeType\File;
-use Leprz\Boilerplate\PathNodeType\Folder;
-use Leprz\Boilerplate\PathNodeType\PhpInterface;
+use Leprz\Boilerplate\PathNode\File;
+use Leprz\Boilerplate\PathNode\Folder;
+use Leprz\Boilerplate\PathNode\Php\PhpInterface;
 use Tests\UnitTestCase;
 
 /**
  * @package Tests\PathNodeType
- * @covers \Leprz\Boilerplate\PathNodeType\PathNode
- * @uses \Leprz\Boilerplate\PathNodeType\PhpInterface
- * @uses \Leprz\Boilerplate\PathNodeType\Folder
- * @uses \Leprz\Boilerplate\PathNodeType\PhpFile
- * @uses \Leprz\Boilerplate\PathNodeType\File
+ * @covers \Leprz\Boilerplate\PathNode\PathNode
+ * @uses \Leprz\Boilerplate\PathNode\Php\PhpFile
+ * @uses \Leprz\Boilerplate\PathNode\Php\PhpInterface
+ * @uses \Leprz\Boilerplate\PathNode\Folder
+ * @uses \Leprz\Boilerplate\PathNode\File
  */
 class PathNodeTest extends UnitTestCase
 {
@@ -33,7 +33,7 @@ class PathNodeTest extends UnitTestCase
     }
 
     /**
-     * @covers \Leprz\Boilerplate\PathNodeType\File::generateChain
+     * @covers \Leprz\Boilerplate\PathNode\File::generateChain
      */
     public function test_generateChain_should_returnSingleValue_when_noParentsAvailable()
     {
