@@ -1,17 +1,23 @@
 <?php
+/*
+ *
+ * This file is part of leprz/boilerplate-generator
+ *
+ * Copyright (c) 2020. Przemek Łęczycki <leczycki.przemyslaw@gmail.com>
+ */
 
 declare(strict_types=1);
 
-namespace Tests\Builder;
+namespace Leprz\Boilerplate\Tests\Builder;
 
 use Leprz\Boilerplate\Builder\FileBuilder;
 use Leprz\Boilerplate\PathNode\File;
 use Leprz\Boilerplate\PathNode\Folder;
 use Symfony\Component\Filesystem\Filesystem;
-use Tests\UnitTestCase;
+use Leprz\Boilerplate\Tests\UnitTestCase;
 
 /**
- * @package Tests\Builder
+ * @package Leprz\Boilerplate\Tests\Builder
  * @covers \Leprz\Boilerplate\Builder\FileBuilder
  * @uses \Leprz\Boilerplate\PathNode\Folder
  * @uses \Leprz\Boilerplate\PathNode\File

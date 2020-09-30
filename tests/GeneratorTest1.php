@@ -1,8 +1,14 @@
 <?php
+/*
+ *
+ * This file is part of leprz/boilerplate-generator
+ *
+ * Copyright (c) 2020. Przemek Łęczycki <leczycki.przemyslaw@gmail.com>
+ */
 
 declare(strict_types=1);
 
-namespace Tests;
+namespace Leprz\Boilerplate\Tests;
 
 use Leprz\Boilerplate\Generator;
 use Leprz\Boilerplate\Configuration;
@@ -19,7 +25,7 @@ use Leprz\Boilerplate\PathNode\Php\PhpFile;
 use Leprz\Boilerplate\PathNode\Php\PhpInterface;
 
 /**
- * @package App\Tests\Shared\Infrastructure\Generator
+ * @package Leprz\Boilerplate\Tests
  */
 class GeneratorTest1 extends UnitTestCase
 {
@@ -104,8 +110,8 @@ class GeneratorTest1 extends UnitTestCase
                 new PhpParameter('command', $command)
             ]));
 
-        $this->generator->generate($command);
-        $this->generator->generate($handler);
+//        $this->generator->generate($command);
+//        $this->generator->generate($handler);
 
         $this->assertTrue(true);
     }
@@ -170,7 +176,7 @@ class GeneratorTest1 extends UnitTestCase
 
         $this->generator = new Generator(
             new Configuration(
-                'Output',
+                'Leprz\Boilerplate\Output',
                 __DIR__ . DIRECTORY_SEPARATOR . 'output' . DIRECTORY_SEPARATOR
             )
         );

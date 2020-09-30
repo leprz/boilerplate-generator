@@ -1,16 +1,22 @@
 <?php
+/*
+ *
+ * This file is part of leprz/boilerplate-generator
+ *
+ * Copyright (c) 2020. Przemek Łęczycki <leczycki.przemyslaw@gmail.com>
+ */
 
 declare(strict_types=1);
 
-namespace Tests\Builder;
+namespace Leprz\Boilerplate\Tests\Builder;
 
 use Leprz\Boilerplate\Builder\PhpClassMetadataBuilder;
 use Leprz\Boilerplate\PathNode\Folder;
 use Leprz\Boilerplate\PathNode\Php\PhpClass;
-use Tests\UnitTestCase;
+use Leprz\Boilerplate\Tests\UnitTestCase;
 
 /**
- * @package Tests\Builder
+ * @package Leprz\Boilerplate\Tests\Builder
  * @covers \Leprz\Boilerplate\Builder\PhpClassMetadataBuilder
  * @uses \Leprz\Boilerplate\PathNode\Php\PhpFile
  * @uses \Leprz\Boilerplate\PathNode\Php\PhpClass

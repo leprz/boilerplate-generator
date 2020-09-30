@@ -1,15 +1,21 @@
 <?php
+/*
+ *
+ * This file is part of leprz/boilerplate-generator
+ *
+ * Copyright (c) 2020. Przemek Łęczycki <leczycki.przemyslaw@gmail.com>
+ */
 
 declare(strict_types=1);
 
-namespace Tests\PathNode\Php;
+namespace Leprz\Boilerplate\Tests\PathNode\Php;
 
 use InvalidArgumentException;
 use Leprz\Boilerplate\PathNode\Php\PhpMethod;
-use Tests\UnitTestCase;
+use Leprz\Boilerplate\Tests\UnitTestCase;
 
 /**
- * @package Tests\PathNodeType
+ * @package Leprz\Boilerplate\Tests\PathNodeType
  * @covers \Leprz\Boilerplate\PathNode\Php\PhpMethod
  */
 class PhpMethodTest extends UnitTestCase

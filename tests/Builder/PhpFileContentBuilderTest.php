@@ -1,8 +1,14 @@
 <?php
+/*
+ *
+ * This file is part of leprz/boilerplate-generator
+ *
+ * Copyright (c) 2020. Przemek Łęczycki <leczycki.przemyslaw@gmail.com>
+ */
 
 declare(strict_types=1);
 
-namespace Tests\Builder;
+namespace Leprz\Boilerplate\Tests\Builder;
 
 use Leprz\Boilerplate\Builder\PhpClassMetadataBuilder;
 use Leprz\Boilerplate\Builder\PhpFileContentBuilder;
@@ -12,7 +18,7 @@ use Leprz\Boilerplate\PathNode\Php\PhpParameter;
 use Leprz\Boilerplate\PathNode\Php\PhpClass;
 use Leprz\Boilerplate\PathNode\Php\PhpFile;
 use Leprz\Boilerplate\PathNode\Php\PhpInterface;
-use Tests\UnitTestCase;
+use Leprz\Boilerplate\Tests\UnitTestCase;
 
 /**
  * @covers \Leprz\Boilerplate\Builder\PhpFileContentBuilder

@@ -3,9 +3,9 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" packagePrefix="Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" packagePrefix="Leprz\Boilerplate\Tests\" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" packagePrefix="Leprz\Boilerplate\" />
-      <sourceFolder url="file://$MODULE_DIR$/tests/output" isTestSource="true" packagePrefix="Output\" />
+      <sourceFolder url="file://$MODULE_DIR$/tests/output" isTestSource="true" packagePrefix="Leprz\Boilerplate\Output\" />
       <excludeFolder url="file://$MODULE_DIR$/coverage" />
       <excludeFolder url="file://$MODULE_DIR$/tests/dist" />
       <excludeFolder url="file://$MODULE_DIR$/vendor" />
