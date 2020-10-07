@@ -15,6 +15,7 @@ use Leprz\Boilerplate\PathNode\Php\PhpClass;
 use Leprz\Boilerplate\PathNode\Php\PhpFile;
 use Leprz\Boilerplate\PathNode\Php\PhpInterface;
 use Leprz\Boilerplate\PathNode\Php\PhpMethod;
+use Leprz\Boilerplate\PathNode\Php\PhpType;
 use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\Method;
 use Nette\PhpGenerator\PhpFile as PhpFileGen;
@@ -191,25 +192,33 @@ class PhpFileContentBuilder
             $parameter = $method->addParameter($phpClassParameter->getName());
 
             if ($phpClassParameterType = $phpClassParameter->getType()) {
-                if ($phpClassParameterType instanceof PhpClass) {
-                    $parameterTypeClassName = $this->classMetadataBuilder->buildUse($phpClassParameterType);
+                if ($objectType = $phpClassParameterType->ofType()) {
+                    $parameterTypeClassName = $this->classMetadataBuilder->buildUse($objectType);
 
                     if ($namespace) {
                         $namespace->addUse($parameterTypeClassName);
                     }
 
-                    $method->addComment((string)new Doc(sprintf('@param \%s', $parameterTypeClassName)));
-                    $parameter->setType($parameterTypeClassName);
+                    if ($phpClassParameterType->typeEquals(PhpType::array())) {
+                        $method->addComment((string)new Doc(sprintf('@param \%s[]', (string)$parameterTypeClassName)));
+                        $parameter->setType((string)$phpClassParameterType);
+                    }
+
+                    if ($phpClassParameterType->typeEquals(PhpType::object())) {
+                        $method->addComment((string)new Doc(sprintf('@param \%s', (string)$parameterTypeClassName)));
+                        $parameter->setType($parameterTypeClassName);
+                    }
                 }
 
-                if (is_string($phpClassParameterType)) {
-                    $method->addComment((string)new Doc(sprintf('@param %s', $phpClassParameterType)));
-                    $parameter->setType($phpClassParameterType);
+                if ($phpClassParameterType->isPrimitive()) {
+                    $method->addComment((string)new Doc(sprintf('@param %s', (string)$phpClassParameterType)));
+                    $parameter->setType((string)$phpClassParameterType);
                 }
-
-                $parameters[] = $parameter;
             }
+
+            $parameters[] = $parameter;
         }
+
         return $parameters;
     }
 
@@ -225,24 +234,47 @@ class PhpFileContentBuilder
     ): void {
         $phpClassReturnType = $phpClassMethod->getReturnType();
 
-        if ($phpClassReturnType instanceof PhpClass) {
-            $returnTypeClassName = $this->classMetadataBuilder->buildUse($phpClassReturnType);
-
-            if ($namespace !== null) {
-                $namespace->addUse($returnTypeClassName);
-            }
-
-            $method->setReturnType($returnTypeClassName);
-
-            $method->addComment(
-                (string)new Doc(
-                    sprintf('@return \%s', $returnTypeClassName)
-                )
-            );
+        if ($phpClassReturnType === null) {
+            return;
         }
 
-        if (is_string($phpClassReturnType)) {
-            $method->setReturnType($phpClassReturnType);
+        if ($phpClassReturnType->isPrimitive()) {
+            $method->addComment(
+                (string)new Doc(
+                    sprintf('@return %s', (string)$phpClassReturnType)
+                )
+            );
+
+            $method->setReturnType((string)$phpClassReturnType);
+            return;
+        }
+
+        if ($returnOfType = $phpClassReturnType->ofType()) {
+            $returnTypeClassUse = $this->classMetadataBuilder->buildUse($returnOfType);
+
+            if ($namespace !== null) {
+                $namespace->addUse($returnTypeClassUse);
+            }
+
+            if ($phpClassReturnType->typeEquals(PhpType::object())) {
+                $method->addComment(
+                    (string)new Doc(
+                        sprintf('@return \%s', $returnTypeClassUse)
+                    )
+                );
+
+                $method->setReturnType($returnTypeClassUse);
+            }
+
+            if ($phpClassReturnType->typeEquals(PhpType::array())) {
+                $method->addComment(
+                    (string)new Doc(
+                        sprintf('@return \%s[]', $returnTypeClassUse)
+                    )
+                );
+
+                $method->setReturnType((string)$phpClassReturnType);
+            }
         }
     }
 }

@@ -24,9 +24,9 @@ class PhpMethod
     private string $name;
 
     /**
-     * @var string|\Leprz\Boilerplate\PathNode\Php\PhpClass
+     * @var \Leprz\Boilerplate\PathNode\Php\PhpType|null
      */
-    private $returnType;
+    private ?PhpType $returnType;
 
     /**
      * @var \Leprz\Boilerplate\PathNode\Php\PhpParameter[]
@@ -41,12 +41,13 @@ class PhpMethod
     /**
      * @param string $name
      * @param string $visibility
-     * @param string $returnType
+     * @param \Leprz\Boilerplate\PathNode\Php\PhpType|null $returnType
      * @param \Leprz\Boilerplate\PathNode\Php\PhpParameter[] $params
      */
-    public function __construct(string $name, string $visibility = 'public', $returnType = '', $params = [])
+    public function __construct(string $name, string $visibility = 'public', ?PhpType $returnType = null, $params = [])
     {
         $this->name = $name;
+
         $this->returnType = $returnType;
 
         $this->validateParameters($params);
@@ -68,10 +69,10 @@ class PhpMethod
     }
 
     /**
-     * @return string|\Leprz\Boilerplate\PathNode\Php\PhpClass
+     * @return \Leprz\Boilerplate\PathNode\Php\PhpType|null
      * @codeCoverageIgnore
      */
-    public function getReturnType()
+    public function getReturnType(): ?PhpType
     {
         return $this->returnType;
     }

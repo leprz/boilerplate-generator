@@ -22,16 +22,16 @@ class PhpParameter
     private string $name;
 
     /**
-     * @var \Leprz\Boilerplate\PathNode\Php\PhpClass|string
+     * @var \Leprz\Boilerplate\PathNode\Php\PhpType|null
      */
-    private $type;
+    private ?PhpType $type;
 
     /**
      * @param string $name
-     * @param string|\Leprz\Boilerplate\PathNode\Php\PhpClass $type
+     * @param \Leprz\Boilerplate\PathNode\Php\PhpType|null $type
      * @codeCoverageIgnore
      */
-    public function __construct(string $name, $type)
+    public function __construct(string $name, ?PhpType $type = null)
     {
         $this->name = $name;
         $this->type = $type;
@@ -47,10 +47,10 @@ class PhpParameter
     }
 
     /**
-     * @return \Leprz\Boilerplate\PathNode\Php\PhpClass|string
+     * @return \Leprz\Boilerplate\PathNode\Php\PhpType|null
      * @codeCoverageIgnore
      */
-    public function getType()
+    public function getType(): ?PhpType
     {
         return $this->type;
     }

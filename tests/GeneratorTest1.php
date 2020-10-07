@@ -1,4 +1,5 @@
 <?php
+
 /*
  *
  * This file is part of leprz/boilerplate-generator
@@ -23,6 +24,7 @@ use Leprz\Boilerplate\PathNode\Php\PhpParameter;
 use Leprz\Boilerplate\PathNode\Php\PhpClass;
 use Leprz\Boilerplate\PathNode\Php\PhpFile;
 use Leprz\Boilerplate\PathNode\Php\PhpInterface;
+use Leprz\Boilerplate\PathNode\Php\PhpType;
 
 /**
  * @package Leprz\Boilerplate\Tests
@@ -67,19 +69,19 @@ class GeneratorTest1 extends UnitTestCase
         );
     }
 
-  /*  public function test_fileBuilder_should_buildValidPathForTheClass(): void
-    {
-        $filesystemMock = $this->createMock(Filesystem::class);
+    /*  public function test_fileBuilder_should_buildValidPathForTheClass(): void
+      {
+          $filesystemMock = $this->createMock(Filesystem::class);
 
-        $builder = new FileBuilder(__DIR__ . DIRECTORY_SEPARATOR . 'dist' . DIRECTORY_SEPARATOR, $filesystemMock);
+          $builder = new FileBuilder(__DIR__ . DIRECTORY_SEPARATOR . 'dist' . DIRECTORY_SEPARATOR, $filesystemMock);
 
-        $classPath = $builder->buildFilePath($this->phpClass);
+          $classPath = $builder->buildFilePath($this->phpClass);
 
-        $this->assertEquals(
-            str_replace('/', DIRECTORY_SEPARATOR, 'dist/Domain/Application/Command/Action.php'),
-            $classPath
-        );
-    }*/
+          $this->assertEquals(
+              str_replace('/', DIRECTORY_SEPARATOR, 'dist/Domain/Application/Command/Action.php'),
+              $classPath
+          );
+      }*/
 
     public function test_namespaceBuilder_should_buildValidNamespace(): void
     {
@@ -106,9 +108,16 @@ class GeneratorTest1 extends UnitTestCase
         $handler = (new Folder('Command'))
             ->addFolder(new Folder('ExampleUseCase'))
             ->addPhpClass(new PhpClass('ExampleHandler'))
-            ->addMethod(new PhpMethod('__invoke', 'public', 'void', [
-                new PhpParameter('command', $command)
-            ]));
+            ->addMethod(
+                new PhpMethod(
+                    '__invoke',
+                    'public',
+                    PhpType::void(),
+                    [
+                        new PhpParameter('command', PhpType::object($command))
+                    ]
+                )
+            );
 
 //        $this->generator->generate($command);
 //        $this->generator->generate($handler);
@@ -123,8 +132,14 @@ class GeneratorTest1 extends UnitTestCase
         $this->generator->generate($this->testClass1);
         $this->generator->generate($this->testClass2);
 
-        $this->generator->appendMethod($this->testClass2, new PhpMethod('test', 'public', 'string'));
-        $this->generator->appendMethod($this->testClass2, new PhpMethod('test1', 'private', $this->testClass2));
+        $this->generator->appendMethod(
+            $this->testClass2,
+            new PhpMethod('test', 'public', PhpType::array($this->testClass2))
+        );
+        $this->generator->appendMethod(
+            $this->testClass2,
+            new PhpMethod('test1', 'private', PhpType::object($this->testClass2))
+        );
 
         $query = (new BoundedContext('Domain'))
             ->addLayer(new Layer('Application'))
@@ -145,9 +160,16 @@ class GeneratorTest1 extends UnitTestCase
             ->addLayer(new Layer('Application'))
             ->addFolder(new Folder('Command'))
             ->addPhpClass(new PhpClass('DoSomethingHandler'))
-            ->addMethod(new PhpMethod('handle', 'public', 'void', [
-                new PhpParameter('command', $command)
-            ]));
+            ->addMethod(
+                new PhpMethod(
+                    'handle',
+                    'public',
+                    PhpType::void(),
+                    [
+                        new PhpParameter('command', PhpType::object($command))
+                    ]
+                )
+            );
 
         $this->generator->generate($handler);
 
@@ -189,7 +211,7 @@ class GeneratorTest1 extends UnitTestCase
 
         $this->testInterface2 = (new Folder('Sample'))
             ->addPhpInterface(new PhpInterface('TestInterface2'))
-            ->addMethod(new PhpMethod('test', 'public', 'string'));
+            ->addMethod(new PhpMethod('test', 'public', PhpType::string()));
 
         $this->testClass2 = (new BoundedContext('Domain'))
             ->addLayer(new Layer('Application'))
@@ -197,10 +219,17 @@ class GeneratorTest1 extends UnitTestCase
             ->addPhpClass(new PhpClass('TestClass2'))
             ->extends($this->testClass1)
             ->implements($this->testInterface1, $this->testInterface2)
-            ->addMethod(new PhpMethod('doSomething', 'public', 'void', [
-                new PhpParameter('testClass1', $this->testClass1),
-                new PhpParameter('test', 'string')
-            ]))
-            ->addMethod(new PhpMethod('doSomethingElse', 'private', $this->testClass1));
+            ->addMethod(
+                new PhpMethod(
+                    'doSomething',
+                    'public',
+                    PhpType::void(),
+                    [
+                        new PhpParameter('testClass1', PhpType::object($this->testClass1)),
+                        new PhpParameter('test', PhpType::string())
+                    ]
+                )
+            )
+            ->addMethod(new PhpMethod('doSomethingElse', 'private', PhpType::object($this->testClass1)));
     }
 }

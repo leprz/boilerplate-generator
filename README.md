@@ -28,6 +28,7 @@ use Leprz\Boilerplate\PathNode\Folder;
 use Leprz\Boilerplate\PathNode\Php\PhpClass;
 use Leprz\Boilerplate\PathNode\Php\PhpMethod;
 use Leprz\Boilerplate\PathNode\Php\PhpParameter;
+use Leprz\Boilerplate\PathNode\Php\PhpType;
 use Leprz\Boilerplate\Configuration;
 use Leprz\Boilerplate\Generator;
 
@@ -45,8 +46,8 @@ $command = (new Folder('Command'))
 $handler = (new Folder('Command'))
     ->addFolder(new Folder('ExampleUseCase'))
     ->addPhpClass(new PhpClass('ExampleHandler'))
-    ->addMethod(new PhpMethod('__invoke', 'public', 'void', [
-        new PhpParameter('command', $command)
+    ->addMethod(new PhpMethod('__invoke', 'public', PhpType::void(), [
+        new PhpParameter('command', PhpType::object($command))
     ]));
 
 $generator->generate($command);
@@ -98,6 +99,7 @@ use Leprz\Boilerplate\PathNode\Php\PhpClass;
 use Leprz\Boilerplate\PathNode\Php\PhpInterface;
 use Leprz\Boilerplate\PathNode\Php\PhpMethod;
 use Leprz\Boilerplate\PathNode\Php\PhpParameter;
+use Leprz\Boilerplate\PathNode\Php\PhpType;
 
 $this->testClass1 = (new Folder('Sample'))
     ->addPhpClass(new PhpClass('TestClass1'));
@@ -107,7 +109,7 @@ $this->testInterface1 = (new Folder('Sample'))
 
 $this->testInterface2 = (new Folder('Sample'))
     ->addPhpInterface(new PhpInterface('TestInterface2'))
-    ->addMethod(new PhpMethod('test', 'public', 'string'));
+    ->addMethod(new PhpMethod('test', 'public', PhpType::string()));
 
 $this->testClass2 = (new BoundedContext('Domain'))
     ->addLayer(new Layer('Application'))
@@ -115,9 +117,9 @@ $this->testClass2 = (new BoundedContext('Domain'))
     ->addPhpClass(new PhpClass('TestClass2'))
     ->extends($this->testClass1)
     ->implements($this->testInterface1, $this->testInterface2)
-    ->addMethod(new PhpMethod('doSomething', 'public', 'void', [
-        new PhpParameter('testClass1', $this->testClass1),
-        new PhpParameter('test', 'string')
+    ->addMethod(new PhpMethod('doSomething', 'public', PhpType::void(), [
+        new PhpParameter('testClass1', PhpType::object($this->testClass1)),
+        new PhpParameter('test', PhpType::string())
     ]))
-    ->addMethod(new PhpMethod('doSomethingElse', 'private', $this->testClass1));
+    ->addMethod(new PhpMethod('doSomethingElse', 'private', PhpType::object($this->testClass1)));
 ```
