@@ -132,15 +132,6 @@ class GeneratorTest1 extends UnitTestCase
         $this->generator->generate($this->testClass1);
         $this->generator->generate($this->testClass2);
 
-        $this->generator->appendMethod(
-            $this->testClass2,
-            new PhpMethod('test', 'public', PhpType::array($this->testClass2))
-        );
-        $this->generator->appendMethod(
-            $this->testClass2,
-            new PhpMethod('test1', 'private', PhpType::object($this->testClass2))
-        );
-
         $query = (new BoundedContext('Domain'))
             ->addLayer(new Layer('Application'))
             ->addFolder(new Folder('Query'))

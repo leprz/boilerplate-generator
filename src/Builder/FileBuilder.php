@@ -66,40 +66,4 @@ class FileBuilder
 
         return $filePath;
     }
-
-    /**
-     * @param \Leprz\Boilerplate\PathNode\Php\PhpClass $file
-     * @param string $methodContent
-     * @return string
-     * @throws \Leprz\Boilerplate\Exception\ClassContentMalformedException
-     */
-    public function appendToFile(PhpClass $file, string $methodContent): string
-    {
-        $filePath = $this->buildFilePath($file);
-
-        $lines = [];
-        foreach (preg_split("/((\r?\n)|(\r\n?))/", rtrim($methodContent)) as $line) {
-            $lines[] = '    ' . $line;
-        }
-
-        $methodContent = implode("\n", $lines);
-
-        $methodContent = str_replace(': ', ': \\', $methodContent);
-
-        $fileContents = file_get_contents($filePath);
-
-        $lastBracketPosition = strpos($fileContents, '}', -2);
-
-        if ($lastBracketPosition === false) {
-            throw new ClassContentMalformedException('Class closing bracket has been not found');
-        }
-
-        $fileContents = substr($fileContents, 0, $lastBracketPosition);
-
-        $fileContents .= "\n" . $methodContent . "\n}\n";
-
-        $this->filesystem->dumpFile($filePath, $fileContents);
-
-        return $filePath;
-    }
 }

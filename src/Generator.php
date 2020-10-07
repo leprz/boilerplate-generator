@@ -54,15 +54,4 @@ class Generator
 
         return $this->fileBuilder->createFile($file, '');
     }
-
-    /**
-     * @param \Leprz\Boilerplate\PathNode\Php\PhpClass $file
-     * @param \Leprz\Boilerplate\PathNode\Php\PhpMethod $method
-     * @return string
-     * @throws \Leprz\Boilerplate\Exception\ClassContentMalformedException
-     */
-    public function appendMethod(PhpClass $file, PhpMethod $method): string
-    {
-        return $this->fileBuilder->appendToFile($file, $this->phpFileContentBuilder->buildMethod($method));
-    }
 }

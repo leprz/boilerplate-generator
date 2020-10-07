@@ -82,23 +82,6 @@ class PhpFileContentBuilder
     }
 
     /**
-     * @param \Leprz\Boilerplate\PathNode\Php\PhpMethod $phpMethod
-     * @return string
-     * @throws \Nette\InvalidStateException
-     */
-    public function buildMethod(PhpMethod $phpMethod): string
-    {
-        $method = new Method($phpMethod->getName());
-        $method
-            ->setParameters($this->toParameters($phpMethod, $method))
-            ->setVisibility($phpMethod->getVisibility());
-
-        $this->addReturnType($phpMethod, $method);
-
-        return $this->psrPrinter->printMethod($method);
-    }
-
-    /**
      * @param bool $strictTypes
      * @return string
      */
