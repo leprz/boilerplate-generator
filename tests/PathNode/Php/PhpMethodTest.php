@@ -1,4 +1,5 @@
 <?php
+
 /*
  *
  * This file is part of leprz/boilerplate-generator
@@ -12,11 +13,13 @@ namespace Leprz\Boilerplate\Tests\PathNode\Php;
 
 use InvalidArgumentException;
 use Leprz\Boilerplate\PathNode\Php\PhpMethod;
+use Leprz\Boilerplate\PathNode\Php\PhpType;
 use Leprz\Boilerplate\Tests\UnitTestCase;
 
 /**
  * @package Leprz\Boilerplate\Tests\PathNodeType
  * @covers \Leprz\Boilerplate\PathNode\Php\PhpMethod
+ * @uses \Leprz\Boilerplate\PathNode\Php\PhpType
  */
 class PhpMethodTest extends UnitTestCase
 {
@@ -25,7 +28,7 @@ class PhpMethodTest extends UnitTestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        new PhpMethod('test', 'public', 'void', [
+        new PhpMethod('test', 'public', PhpType::void(), [
             'parameter'
         ]);
     }

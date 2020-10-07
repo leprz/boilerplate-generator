@@ -1,4 +1,5 @@
 <?php
+
 /*
  *
  * This file is part of leprz/boilerplate-generator
@@ -18,6 +19,7 @@ use Leprz\Boilerplate\PathNode\Php\PhpParameter;
 use Leprz\Boilerplate\PathNode\Php\PhpClass;
 use Leprz\Boilerplate\PathNode\Php\PhpFile;
 use Leprz\Boilerplate\PathNode\Php\PhpInterface;
+use Leprz\Boilerplate\PathNode\Php\PhpType;
 use Leprz\Boilerplate\Tests\UnitTestCase;
 
 /**
@@ -28,6 +30,7 @@ use Leprz\Boilerplate\Tests\UnitTestCase;
  * @uses   \Leprz\Boilerplate\PathNode\Php\PhpClass
  * @uses   \Leprz\Boilerplate\PathNode\Php\PhpFile
  * @uses   \Leprz\Boilerplate\PathNode\Php\PhpMethod
+ * @uses   \Leprz\Boilerplate\PathNode\Php\PhpType
  * @uses   \Leprz\Boilerplate\PathNode\Php\PhpInterface
  * @uses   \Leprz\Boilerplate\PathNode\Php\PhpParameter
  * @uses   \Leprz\Boilerplate\PathNode\Folder
@@ -63,7 +66,43 @@ class PhpFileContentBuilderTest extends UnitTestCase
     {
         $phpFileContent = $this->phpFileContentBuilder->build(
             (new PhpClass('TestClass'))
-                ->addMethod(new PhpMethod('test', 'public', 'string'))
+                ->addMethod(new PhpMethod('test', 'public', PhpType::string()))
+        );
+
+        $this->assertStringContainsString(
+            'public function test(): string{}',
+            preg_replace('/(\n|\s{4})/', '', $phpFileContent)
+        );
+    }
+
+    public function test_build_should_buildClassMethodWithNoReturnType()
+    {
+        $phpFileContent = $this->phpFileContentBuilder->build(
+            (new PhpClass('TestClass'))
+                ->addMethod(new PhpMethod('test', 'public', null))
+        );
+
+        $this->assertStringNotContainsString(
+            '@return',
+            preg_replace('/(\n|\s{4})/', '', $phpFileContent)
+        );
+
+        $this->assertStringContainsString(
+            'public function test(){}',
+            preg_replace('/(\n|\s{4})/', '', $phpFileContent)
+        );
+    }
+
+    public function test_build_should_buildClassMethodWithSimpleReturnType()
+    {
+        $phpFileContent = $this->phpFileContentBuilder->build(
+            (new PhpClass('TestClass'))
+                ->addMethod(new PhpMethod('test', 'public', PhpType::string()))
+        );
+
+        $this->assertStringContainsString(
+            '@return string',
+            preg_replace('/(\n|\s{4})/', '', $phpFileContent)
         );
 
         $this->assertStringContainsString(
@@ -81,16 +120,94 @@ class PhpFileContentBuilderTest extends UnitTestCase
 
         $phpFileContent = $this->phpFileContentBuilder->build(
             (new PhpClass('TestClass'))
-                ->addMethod(new PhpMethod('test', 'public', $returnType))
+                ->addMethod(new PhpMethod('test', 'public', PhpType::object($returnType)))
+        );
+
+        $this->assertStringContainsString(
+            sprintf('use %s\Test\ReturnTypeClass;', self::APP_PREFIX),
+            $phpFileContent
+        );
+
+        $this->assertStringContainsString(
+            sprintf('@return \%s\Test\ReturnTypeClass', self::APP_PREFIX),
+            preg_replace('/(\n|\s{4})/', '', $phpFileContent)
         );
 
         $this->assertStringContainsString(
             'public function test(): ReturnTypeClass{}',
             preg_replace('/(\n|\s{4})/', '', $phpFileContent)
         );
+    }
+
+    public function test_build_should_buildClassMethodWithArraySimpleReturnType()
+    {
+        $phpFileContent = $this->phpFileContentBuilder->build(
+            (new PhpClass('TestClass'))
+                ->addMethod(new PhpMethod('test', 'public', PhpType::array()))
+        );
+
+        $this->assertStringContainsString(
+            '@return array',
+            preg_replace('/(\n|\s{4})/', '', $phpFileContent)
+        );
+
+        $this->assertStringContainsString(
+            'public function test(): array{}',
+            preg_replace('/(\n|\s{4})/', '', $phpFileContent)
+        );
+    }
+
+    public function test_build_should_buildClassMethodWithArrayOfObjectsReturnType()
+    {
+        $returnType = (new Folder('Test'))
+            ->addPhpClass(new PhpClass('ReturnTypeClass'));
+
+        // TODO Test/TestClass returned in TestClass will not figure out alias. Create possibility to add alias
+
+        $phpFileContent = $this->phpFileContentBuilder->build(
+            (new PhpClass('TestClass'))
+                ->addMethod(new PhpMethod('test', 'public', PhpType::array($returnType)))
+        );
+
+        $this->assertStringContainsString(
+            '@return \App\Test\ReturnTypeClass[]',
+            preg_replace('/(\n|\s{4})/', '', $phpFileContent)
+        );
+
+        $this->assertStringContainsString(
+            'public function test(): array{}',
+            preg_replace('/(\n|\s{4})/', '', $phpFileContent)
+        );
 
         $this->assertStringContainsString(
             'use App\Test\ReturnTypeClass;',
+            $phpFileContent
+        );
+    }
+
+    public function test_build_should_buildMethodParameterWithNoType()
+    {
+        $phpFileContent = $this->phpFileContentBuilder->build(
+            (new PhpClass('TestClass'))
+                ->addMethod(
+                    new PhpMethod(
+                        'test',
+                        'public',
+                        null,
+                        [
+                            new PhpParameter('test')
+                        ]
+                    )
+                )
+        );
+
+        $this->assertStringNotContainsString(
+            '@param',
+            $phpFileContent
+        );
+
+        $this->assertStringContainsString(
+            'test($test)',
             $phpFileContent
         );
     }
@@ -103,12 +220,17 @@ class PhpFileContentBuilderTest extends UnitTestCase
                     new PhpMethod(
                         'test',
                         'public',
-                        'string',
+                        null,
                         [
-                            new PhpParameter('test', 'string')
+                            new PhpParameter('test', PhpType::string())
                         ]
                     )
                 )
+        );
+
+        $this->assertStringContainsString(
+            '@param string',
+            $phpFileContent
         );
 
         $this->assertStringContainsString(
@@ -117,7 +239,7 @@ class PhpFileContentBuilderTest extends UnitTestCase
         );
     }
 
-    public function test_build_should_buildMethodParameterWithObjectType()
+    public function test_build_should_buildMethodParameterWithSimpleObject()
     {
         $phpFileContent = $this->phpFileContentBuilder->build(
             (new PhpClass('TestClass'))
@@ -125,11 +247,40 @@ class PhpFileContentBuilderTest extends UnitTestCase
                     new PhpMethod(
                         'test',
                         'public',
-                        'string',
+                        PhpType::string(),
+                        [
+                            new PhpParameter('test', PhpType::object())
+                        ]
+                    )
+                )
+        );
+
+        $this->assertStringContainsString(
+            'test(object $test)',
+            $phpFileContent
+        );
+
+        $this->assertStringContainsString(
+            '@param object',
+            $phpFileContent
+        );
+    }
+
+    public function test_build_should_buildMethodParameterWithObjectOfType()
+    {
+        $phpFileContent = $this->phpFileContentBuilder->build(
+            (new PhpClass('TestClass'))
+                ->addMethod(
+                    new PhpMethod(
+                        'test',
+                        'public',
+                        PhpType::string(),
                         [
                             new PhpParameter(
                                 'test',
-                                (new Folder('Test'))->addPhpClass(new PhpClass('ParameterType'))
+                                PhpType::object(
+                                    (new Folder('Test'))->addPhpClass(new PhpClass('ParameterType'))
+                                )
                             )
                         ]
                     )
@@ -137,12 +288,80 @@ class PhpFileContentBuilderTest extends UnitTestCase
         );
 
         $this->assertStringContainsString(
-            'test(ParameterType $test)',
+            sprintf('use %s\Test\ParameterType;', self::APP_PREFIX),
             $phpFileContent
         );
 
         $this->assertStringContainsString(
-            sprintf('use %s\Test\ParameterType;', self::APP_PREFIX),
+            sprintf('@param \%s\Test\ParameterType', self::APP_PREFIX),
+            $phpFileContent
+        );
+
+        $this->assertStringContainsString(
+            'test(ParameterType $test)',
+            $phpFileContent
+        );
+    }
+
+    public function test_build_should_buildMethodParameterWithSimpleArrayOfType()
+    {
+        $phpFileContent = $this->phpFileContentBuilder->build(
+            (new PhpClass('TestClass'))
+                ->addMethod(
+                    new PhpMethod(
+                        'test',
+                        'public',
+                        PhpType::string(),
+                        [
+                            new PhpParameter(
+                                'test',
+                                PhpType::array()
+                            )
+                        ]
+                    )
+                )
+        );
+
+        $this->assertStringContainsString(
+            '@param array',
+            $phpFileContent
+        );
+
+        $this->assertStringContainsString(
+            'test(array $test)',
+            $phpFileContent
+        );
+    }
+
+    public function test_build_should_buildMethodParameterWithSimpleArrayType()
+    {
+        $ofType = (new Folder('Test'))
+            ->addPhpClass(new PhpClass('ArrayTypeClass'));
+
+        $phpFileContent = $this->phpFileContentBuilder->build(
+            (new PhpClass('TestClass'))
+                ->addMethod(
+                    new PhpMethod(
+                        'test',
+                        'public',
+                        PhpType::string(),
+                        [
+                            new PhpParameter(
+                                'test',
+                                PhpType::array($ofType)
+                            )
+                        ]
+                    )
+                )
+        );
+
+        $this->assertStringContainsString(
+            sprintf('@param \%s\Test\ArrayTypeClass[]', self::APP_PREFIX),
+            $phpFileContent
+        );
+
+        $this->assertStringContainsString(
+            'test(array $test)',
             $phpFileContent
         );
     }
@@ -161,7 +380,7 @@ class PhpFileContentBuilderTest extends UnitTestCase
     {
         $phpFileContent = $this->phpFileContentBuilder->build(
             (new PhpInterface('TestInterface'))
-                ->addMethod(new PhpMethod('test', 'public', 'string'))
+                ->addMethod(new PhpMethod('test', 'public', PhpType::string()))
         );
 
         $this->assertStringContainsString('public function test(): string;', $phpFileContent);
