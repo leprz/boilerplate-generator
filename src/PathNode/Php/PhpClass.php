@@ -36,6 +36,18 @@ class PhpClass extends PhpFile
     }
 
     /**
+     * @param \Leprz\Boilerplate\PathNode\Php\PhpMethod $method
+     * @return \Leprz\Boilerplate\PathNode\Php\PhpClass
+     * @codeCoverageIgnore
+     */
+    public function addMethod(PhpMethod $method): self
+    {
+        $this->methods[] = $method;
+
+        return $this;
+    }
+
+    /**
      * @param \Leprz\Boilerplate\PathNode\Php\PhpClass $phpClass
      * @return $this
      * @codeCoverageIgnore

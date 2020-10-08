@@ -21,7 +21,7 @@ class PhpFile extends File
     /**
      * @var \Leprz\Boilerplate\PathNode\Php\PhpMethod[]
      */
-    private array $methods = [];
+    protected array $methods = [];
 
     /**
      * @param string $name
