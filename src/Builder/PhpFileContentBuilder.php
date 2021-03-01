@@ -4,7 +4,7 @@
  *
  * This file is part of leprz/boilerplate-generator
  *
- * Copyright (c) 2020. Przemek Łęczycki <leczycki.przemyslaw@gmail.com>
+ * Copyright (c) 2021. Przemek Łęczycki <leczycki.przemyslaw@gmail.com>
  */
 
 declare(strict_types=1);
@@ -183,12 +183,12 @@ class PhpFileContentBuilder
                     }
 
                     if ($phpClassParameterType->typeEquals(PhpType::array())) {
-                        $method->addComment((string)new Doc(sprintf('@param \%s[]', (string)$parameterTypeClassName)));
+                        $method->addComment((string)new Doc(sprintf('@param \%s[]', $parameterTypeClassName)));
                         $parameter->setType((string)$phpClassParameterType);
                     }
 
                     if ($phpClassParameterType->typeEquals(PhpType::object())) {
-                        $method->addComment((string)new Doc(sprintf('@param \%s', (string)$parameterTypeClassName)));
+                        $method->addComment((string)new Doc(sprintf('@param \%s', $parameterTypeClassName)));
                         $parameter->setType($parameterTypeClassName);
                     }
                 }
