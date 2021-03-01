@@ -4,7 +4,7 @@
  *
  * This file is part of leprz/boilerplate-generator
  *
- * Copyright (c) 2020. Przemek Łęczycki <leczycki.przemyslaw@gmail.com>
+ * Copyright (c) 2021. Przemek Łęczycki <leczycki.przemyslaw@gmail.com>
  */
 
 declare(strict_types=1);
@@ -27,7 +27,6 @@ use Leprz\Boilerplate\Tests\UnitTestCase;
  */
 class PhpClassMetadataBuilderTest extends UnitTestCase
 {
-
     /**
      * @var \Leprz\Boilerplate\Builder\PhpClassMetadataBuilder
      */
@@ -39,7 +38,7 @@ class PhpClassMetadataBuilderTest extends UnitTestCase
         $this->assertEquals('Test', $className);
     }
 
-    public function test_BuildNamespace_should_returnValidNamespace()
+    public function test_buildNamespace_should_returnValidNamespace()
     {
         $namespace = $this->phpClassMetadataBuilder->buildNamespace(new PhpClass('Test'));
         $nestedNamespace = $this->phpClassMetadataBuilder->buildNamespace(
@@ -50,6 +49,18 @@ class PhpClassMetadataBuilderTest extends UnitTestCase
 
         $this->assertEquals('App', $namespace);
         $this->assertEquals('App\Test', $nestedNamespace);
+    }
+
+    public function test_buildClassMetadataForExistingClass(): void
+    {
+        $phpClass = PhpClass::fromFQCN("Leprz\Test\TestClass");
+
+        $namespace = $this->phpClassMetadataBuilder->buildNamespace($phpClass);
+        $use = $this->phpClassMetadataBuilder->buildUse($phpClass);
+
+        $this->assertEquals('Leprz\Test', $namespace);
+        $this->assertEquals('TestClass', $phpClass->getClassName());
+        $this->assertEquals('Leprz\Test\TestClass', $use);
     }
 
     public function test_BuildUse_should_returnValidUse()

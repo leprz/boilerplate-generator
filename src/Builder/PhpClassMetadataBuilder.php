@@ -4,7 +4,7 @@
  *
  * This file is part of leprz/boilerplate-generator
  *
- * Copyright (c) 2020. Przemek Łęczycki <leczycki.przemyslaw@gmail.com>
+ * Copyright (c) 2021. Przemek Łęczycki <leczycki.przemyslaw@gmail.com>
  */
 
 declare(strict_types=1);
@@ -42,7 +42,7 @@ class PhpClassMetadataBuilder
 
         array_pop($chain);
 
-        return $this->concatChunksIntoNamespace($chain);
+        return $this->concatChunksIntoNamespace($chain, $class->isExternal());
     }
 
     /**
@@ -60,14 +60,15 @@ class PhpClassMetadataBuilder
      */
     public function buildUse(PhpClass $class): string
     {
-        return $this->concatChunksIntoNamespace($class->generateChain());
+        return $this->concatChunksIntoNamespace($class->generateChain(), $class->isExternal());
     }
 
     /**
      * @param \Leprz\Boilerplate\PathNode\PathNode[] $chain
+     * @param bool $isExternal
      * @return string
      */
-    private function concatChunksIntoNamespace(array $chain): string
+    private function concatChunksIntoNamespace(array $chain, bool $isExternal = false): string
     {
         if (empty($chain)) {
             return $this->appPrefix;
@@ -79,6 +80,10 @@ class PhpClassMetadataBuilder
             },
             $chain
         );
+
+        if ($isExternal) {
+            return implode('\\', $chainOfStrings);
+        }
 
         return $this->appPrefix . '\\' . implode('\\', $chainOfStrings);
     }

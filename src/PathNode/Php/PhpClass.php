@@ -4,12 +4,14 @@
  *
  * This file is part of leprz/boilerplate-generator
  *
- * Copyright (c) 2020. Przemek Łęczycki <leczycki.przemyslaw@gmail.com>
+ * Copyright (c) 2021. Przemek Łęczycki <leczycki.przemyslaw@gmail.com>
  */
 
 declare(strict_types=1);
 
 namespace Leprz\Boilerplate\PathNode\Php;
+
+use Leprz\Boilerplate\PathNode\Folder;
 
 /**
  * @package Leprz\Boilerplate\PathNode\Php
@@ -25,6 +27,31 @@ class PhpClass extends PhpFile
      * @var \Leprz\Boilerplate\PathNode\Php\PhpInterface[]
      */
     private array $implements = [];
+
+    /**
+     * @var bool
+     */
+    private bool $isExternal = false;
+
+    /**
+     * @param string $class
+     * @return static
+     */
+    public static function fromFQCN(string $class): self
+    {
+        $explodedClassName = explode("\\", $class);
+
+        $self = new static(array_pop($explodedClassName));
+        $self->isExternal = true;
+
+        $parent = $self;
+
+        while ($folderName = array_pop($explodedClassName)) {
+            $parent = $parent->parent = new Folder($folderName);
+        }
+
+        return $self;
+    }
 
     /**
      * @return string
@@ -87,5 +114,13 @@ class PhpClass extends PhpFile
     public function getImplements(): array
     {
         return $this->implements;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isExternal(): bool
+    {
+        return $this->isExternal;
     }
 }
