@@ -4,7 +4,7 @@
  *
  * This file is part of leprz/boilerplate-generator
  *
- * Copyright (c) 2020. Przemek Łęczycki <leczycki.przemyslaw@gmail.com>
+ * Copyright (c) 2021. Przemek Łęczycki <leczycki.przemyslaw@gmail.com>
  */
 
 declare(strict_types=1);
@@ -52,5 +52,12 @@ class PhpMethodTest extends UnitTestCase
         $this->expectException(InvalidArgumentException::class);
 
         new PhpMethod('test', 'abstract final public');
+    }
+
+    public function test__construct_should_createMethodWithProtectedVisibility(): void
+    {
+        $method = new PhpMethod('test', 'protected');
+
+        $this->assertEquals('protected', $method->getVisibility());
     }
 }
