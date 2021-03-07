@@ -42,14 +42,16 @@ class Generator
 
     /**
      * @param \Leprz\Boilerplate\PathNode\File $file
+     * @param bool $override
      * @return string file path
+     * @throws \Leprz\Boilerplate\Exception\FileAlreadyExistsException
      */
-    public function generate(File $file): string
+    public function generate(File $file, bool $override = false): string
     {
         if ($file instanceof PhpFile) {
-            return $this->fileBuilder->createFile($file, $this->phpFileContentBuilder->build($file));
+            return $this->fileBuilder->createFile($file, $this->phpFileContentBuilder->build($file), $override);
         }
 
-        return $this->fileBuilder->createFile($file, '');
+        return $this->fileBuilder->createFile($file, '', $override);
     }
 }

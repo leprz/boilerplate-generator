@@ -4,16 +4,15 @@
  *
  * This file is part of leprz/boilerplate-generator
  *
- * Copyright (c) 2020. Przemek Łęczycki <leczycki.przemyslaw@gmail.com>
+ * Copyright (c) 2021. Przemek Łęczycki <leczycki.przemyslaw@gmail.com>
  */
 
 declare(strict_types=1);
 
 namespace Leprz\Boilerplate\Builder;
 
-use Leprz\Boilerplate\Exception\ClassContentMalformedException;
+use Leprz\Boilerplate\Exception\FileAlreadyExistsException;
 use Leprz\Boilerplate\PathNode\File;
-use Leprz\Boilerplate\PathNode\Php\PhpClass;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -56,11 +55,17 @@ class FileBuilder
     /**
      * @param \Leprz\Boilerplate\PathNode\File $file
      * @param string $content
+     * @param bool $override
      * @return string
+     * @throws \Leprz\Boilerplate\Exception\FileAlreadyExistsException
      */
-    public function createFile(File $file, string $content): string
+    public function createFile(File $file, string $content, bool $override = false): string
     {
         $filePath = $this->buildFilePath($file);
+
+        if ($this->filesystem->exists($filePath) && $override === false) {
+            throw FileAlreadyExistsException::inPath($filePath);
+        }
 
         $this->filesystem->dumpFile($filePath, $content);
 
