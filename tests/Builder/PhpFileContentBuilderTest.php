@@ -4,7 +4,7 @@
  *
  * This file is part of leprz/boilerplate-generator
  *
- * Copyright (c) 2020. Przemek Łęczycki <leczycki.przemyslaw@gmail.com>
+ * Copyright (c) 2021. Przemek Łęczycki <leczycki.przemyslaw@gmail.com>
  */
 
 declare(strict_types=1);
@@ -19,6 +19,7 @@ use Leprz\Boilerplate\PathNode\Php\PhpParameter;
 use Leprz\Boilerplate\PathNode\Php\PhpClass;
 use Leprz\Boilerplate\PathNode\Php\PhpFile;
 use Leprz\Boilerplate\PathNode\Php\PhpInterface;
+use Leprz\Boilerplate\PathNode\Php\PhpTrait;
 use Leprz\Boilerplate\PathNode\Php\PhpType;
 use Leprz\Boilerplate\Tests\UnitTestCase;
 
@@ -404,6 +405,36 @@ class PhpFileContentBuilderTest extends UnitTestCase
         );
 
         $this->assertStringContainsString('TestClass extends ParentClass', $phpFileContent);
+    }
+
+    public function test_build_should_buildTrait(): void
+    {
+        $phpFileContent = $this->phpFileContentBuilder->build(
+            (new PhpTrait('TestTrait'))
+        );
+
+        $this->assertStringContainsString('trait TestTrait', $phpFileContent);
+    }
+
+    public function test_build_should_buildTrait_withMethod(): void
+    {
+        $phpFileContent = $this->phpFileContentBuilder->build(
+            (new PhpTrait('TestTrait'))->addMethod(new PhpMethod('test', 'public', PhpType::void()))
+        );
+
+        $this->assertStringContainsString('public function test(): void', $phpFileContent);
+    }
+
+    public function test_build_should_allowToUseTraitInClasses(): void
+    {
+        $trait = new PhpTrait('TestTrait');
+
+        $phpFileContent = $this->phpFileContentBuilder->build(
+            (new Folder('Test'))->addPhpClass(new PhpClass('TestClass'))->useTraits($trait)
+        );
+
+        $this->assertStringContainsString('use App\TestTrait;', $phpFileContent);
+        $this->assertStringContainsString('use TestTrait', $phpFileContent);
     }
 
     public function test()

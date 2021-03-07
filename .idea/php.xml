@@ -75,4 +75,9 @@
       <PhpUnitSettings load_method="PHPUNIT_PHAR" custom_loader_path="$PROJECT_DIR$/vendor/phpunit/phpunit/phpunit" phpunit_phar_path="$PROJECT_DIR$/vendor/phpunit/phpunit/phpunit" />
     </phpunit_settings>
   </component>
+  <component name="Psalm">
+    <Psalm_settings>
+      <PsalmConfiguration tool_path="$PROJECT_DIR$/vendor/bin/psalm" />
+    </Psalm_settings>
+  </component>
 </project>

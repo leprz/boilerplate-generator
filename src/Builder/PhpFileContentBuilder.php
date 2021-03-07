@@ -15,6 +15,7 @@ use Leprz\Boilerplate\PathNode\Php\PhpClass;
 use Leprz\Boilerplate\PathNode\Php\PhpFile;
 use Leprz\Boilerplate\PathNode\Php\PhpInterface;
 use Leprz\Boilerplate\PathNode\Php\PhpMethod;
+use Leprz\Boilerplate\PathNode\Php\PhpTrait;
 use Leprz\Boilerplate\PathNode\Php\PhpType;
 use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\Method;
@@ -65,6 +66,16 @@ class PhpFileContentBuilder
 
             if ($phpFile instanceof PhpInterface) {
                 $class->setInterface();
+            }
+
+            if ($phpFile instanceof PhpTrait) {
+                $class->setTrait();
+            }
+
+            if ($usedTraits = $phpFile->getUsedTraits()) {
+                foreach ($usedTraits as $usedTrait) {
+                    $this->addTrait($usedTrait, $class, $namespace);
+                }
             }
 
             if ($phpClassMethods = $phpFile->getMethods()) {
@@ -259,5 +270,19 @@ class PhpFileContentBuilder
                 $method->setReturnType((string)$phpClassReturnType);
             }
         }
+    }
+
+    /**
+     * @param \Leprz\Boilerplate\PathNode\Php\PhpTrait $trait
+     * @param \Nette\PhpGenerator\ClassType $class
+     * @param \Nette\PhpGenerator\PhpNamespace $namespace
+     */
+    private function addTrait(PhpTrait $trait, ClassType $class, PhpNamespace $namespace): void
+    {
+        $use = $this->classMetadataBuilder->buildUse($trait);
+
+        $class->addTrait($use);
+
+        $namespace->addUse($use);
     }
 }

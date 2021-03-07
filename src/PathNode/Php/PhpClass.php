@@ -29,6 +29,11 @@ class PhpClass extends PhpFile
     private array $implements = [];
 
     /**
+     * @var \Leprz\Boilerplate\PathNode\Php\PhpTrait[]
+     */
+    private array $usedTraits = [];
+
+    /**
      * @var bool
      */
     private bool $isExternal = false;
@@ -122,5 +127,24 @@ class PhpClass extends PhpFile
     public function isExternal(): bool
     {
         return $this->isExternal;
+    }
+
+    /**
+     * @param \Leprz\Boilerplate\PathNode\Php\PhpTrait ...$traits
+     * @return $this
+     */
+    public function useTraits(PhpTrait ...$traits): self
+    {
+        $this->usedTraits = $traits;
+
+        return $this;
+    }
+
+    /**
+     * @return \Leprz\Boilerplate\PathNode\Php\PhpTrait[]
+     */
+    public function getUsedTraits(): array
+    {
+        return $this->usedTraits;
     }
 }
