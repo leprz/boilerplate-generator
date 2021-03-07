@@ -4,7 +4,7 @@
  *
  * This file is part of leprz/boilerplate-generator
  *
- * Copyright (c) 2020. Przemek Łęczycki <leczycki.przemyslaw@gmail.com>
+ * Copyright (c) 2021. Przemek Łęczycki <leczycki.przemyslaw@gmail.com>
  */
 
 declare(strict_types=1);
@@ -12,8 +12,10 @@ declare(strict_types=1);
 namespace Leprz\Boilerplate\Tests\Builder;
 
 use Leprz\Boilerplate\Builder\FileBuilder;
+use Leprz\Boilerplate\Exception\FileAlreadyExistsException;
 use Leprz\Boilerplate\PathNode\File;
 use Leprz\Boilerplate\PathNode\Folder;
+use Leprz\Boilerplate\PathNode\Php\PhpFile;
 use Symfony\Component\Filesystem\Filesystem;
 use Leprz\Boilerplate\Tests\UnitTestCase;
 
@@ -53,6 +55,29 @@ class FileBuilderTest extends UnitTestCase
     {
         $this->filesystemMock->expects(self::once())->method('dumpFile');
         $this->fileBuilder->createFile(new File('test', 'yaml'), '');
+    }
+
+    public function test_createFile_shouldNotAllowToOverrideGeneratedFilesByDefault()
+    {
+        $this->assertFileOverridingIsNotAllowed();
+
+        $this->filesystemMock->method('exists')->willReturn(true);
+
+        $this->fileBuilder->createFile(new PhpFile('Test'), '');
+    }
+
+    public function test_createFile_shouldAllowToOverrideGeneratedFiles_when_OverridingIsEnabled(): void
+    {
+        $this->filesystemMock->method('exists')->willReturn(true);
+
+        $filePath = $this->fileBuilder->createFile(new PhpFile('Test'), '', true);
+
+        $this->assertNotEmpty($filePath);
+    }
+
+    private function assertFileOverridingIsNotAllowed(): void
+    {
+        $this->expectException(FileAlreadyExistsException::class);
     }
 
     protected function setUp(): void
