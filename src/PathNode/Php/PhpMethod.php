@@ -4,7 +4,7 @@
  *
  * This file is part of leprz/boilerplate-generator
  *
- * Copyright (c) 2020. Przemek Łęczycki <leczycki.przemyslaw@gmail.com>
+ * Copyright (c) 2021. Przemek Łęczycki <leczycki.przemyslaw@gmail.com>
  */
 
 declare(strict_types=1);
@@ -115,7 +115,7 @@ class PhpMethod
         }
 
         foreach ($visibilityParts as $visibilityPart) {
-            if (!in_array($visibilityPart, ['final', 'private', 'public', 'static', 'abstract'])) {
+            if (!in_array($visibilityPart, ['final', 'private', 'protected', 'public', 'static', 'abstract'])) {
                 throw new InvalidArgumentException('Invalid method visibility ' . $visibility);
             }
         }
