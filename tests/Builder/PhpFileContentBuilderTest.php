@@ -186,6 +186,25 @@ class PhpFileContentBuilderTest extends UnitTestCase
         );
     }
 
+    public function test_build_should_buildMethodWithFinalAndStaticVisibility()
+    {
+        $phpFileContent = $this->phpFileContentBuilder->build(
+            (new PhpClass('TestClass'))
+                ->addMethod(
+                    new PhpMethod(
+                        'test',
+                        'final static public',
+                        null,
+                    )
+                )
+        );
+
+        $this->assertStringContainsString(
+            'final public static function test',
+            $phpFileContent
+        );
+    }
+
     public function test_build_should_buildMethodParameterWithNoType()
     {
         $phpFileContent = $this->phpFileContentBuilder->build(

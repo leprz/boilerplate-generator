@@ -23,7 +23,6 @@ use Leprz\Boilerplate\Tests\UnitTestCase;
  */
 class PhpMethodTest extends UnitTestCase
 {
-
     public function test__construct_should_validateParameterType(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -42,9 +41,10 @@ class PhpMethodTest extends UnitTestCase
 
     public function test__construct_should_createMethodWithComplexVisibility(): void
     {
-
         $method = new PhpMethod('test', 'final public static');
-        $this->assertEquals('final public static', $method->getVisibility());
+        $this->assertEquals('public', $method->getVisibility());
+        $this->assertTrue($method->isFinal());
+        $this->assertTrue($method->isStatic());
     }
 
     public function test__construct_should_throwException_when_visibilityIsAbstractFinal(): void

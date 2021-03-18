@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace Leprz\Boilerplate\PathNode\Php;
 
 use InvalidArgumentException;
+use RuntimeException;
 
 /**
  * @package Leprz\Boilerplate\PathNode\Php
@@ -34,9 +35,9 @@ class PhpMethod
     private array $parameters;
 
     /**
-     * @var string
+     * @var string[]
      */
-    private string $visibility;
+    private array $visibility;
 
     /**
      * @param string $name
@@ -50,13 +51,18 @@ class PhpMethod
 
         $this->returnType = $returnType;
 
-        $this->validateParameters($params);
+        self::validateParameters($params);
 
         $this->parameters = $params;
 
-        $this->validateVisibility($visibility);
+        self::validateVisibility($visibility);
 
-        $this->visibility = $visibility;
+        $this->visibility = self::convertVisibilityToArray($visibility);
+    }
+
+    private static function convertVisibilityToArray(string $visibility): array
+    {
+        return explode(' ', $visibility);
     }
 
     /**
@@ -91,13 +97,19 @@ class PhpMethod
      */
     public function getVisibility(): string
     {
-        return $this->visibility;
+        foreach ($this->visibility as $visibilityPart) {
+            if (in_array($visibilityPart, ['public', 'private', 'protected'])) {
+                return $visibilityPart;
+            }
+        }
+
+        throw new RuntimeException('Invalid method visibility');
     }
 
     /**
      * @param array $params
      */
-    private function validateParameters(array $params): void
+    private static function validateParameters(array $params): void
     {
         foreach ($params as $param) {
             if (!($param instanceof PhpParameter)) {
@@ -106,18 +118,24 @@ class PhpMethod
         }
     }
 
-    private function validateVisibility(string $visibility): void
+    private static function validateVisibility(string $visibility): void
     {
-        $visibilityParts = explode(' ', $visibility);
-
-        if (in_array('final', $visibilityParts) && in_array('abstract', $visibilityParts)) {
-            throw new InvalidArgumentException('Can not use abstract and final for visibility');
-        }
+        $visibilityParts = self::convertVisibilityToArray($visibility);
 
         foreach ($visibilityParts as $visibilityPart) {
-            if (!in_array($visibilityPart, ['final', 'private', 'protected', 'public', 'static', 'abstract'])) {
+            if (!in_array($visibilityPart, ['final', 'private', 'protected', 'public', 'static'])) {
                 throw new InvalidArgumentException('Invalid method visibility ' . $visibility);
             }
         }
+    }
+
+    public function isFinal(): bool
+    {
+        return in_array('final', $this->visibility);
+    }
+
+    public function isStatic(): bool
+    {
+        return in_array('static', $this->visibility);
     }
 }
