@@ -161,6 +161,10 @@ class PhpFileContentBuilder
             ->addMethod($phpClassMethod->getName())
             ->setVisibility($phpClassMethod->getVisibility());
 
+        $method->setFinal($phpClassMethod->isFinal());
+
+        $method->setStatic($phpClassMethod->isStatic());
+
         $method->setParameters($this->toParameters($phpClassMethod, $method, $namespace));
 
         $this->addReturnType($phpClassMethod, $method, $namespace);
