@@ -14,11 +14,14 @@ namespace Leprz\Boilerplate\Tests\Builder;
 use Leprz\Boilerplate\Builder\PhpClassMetadataBuilder;
 use Leprz\Boilerplate\Builder\PhpFileContentBuilder;
 use Leprz\Boilerplate\PathNode\Folder;
-use Leprz\Boilerplate\PathNode\Php\PhpMethod;
-use Leprz\Boilerplate\PathNode\Php\PhpParameter;
+use Leprz\Boilerplate\PathNode\Php\Call\PhpArgument;
+use Leprz\Boilerplate\PathNode\Php\Call\PhpAttributeCall;
+use Leprz\Boilerplate\PathNode\Php\PhpAttribute;
 use Leprz\Boilerplate\PathNode\Php\PhpClass;
 use Leprz\Boilerplate\PathNode\Php\PhpFile;
 use Leprz\Boilerplate\PathNode\Php\PhpInterface;
+use Leprz\Boilerplate\PathNode\Php\PhpMethod;
+use Leprz\Boilerplate\PathNode\Php\PhpParameter;
 use Leprz\Boilerplate\PathNode\Php\PhpTrait;
 use Leprz\Boilerplate\PathNode\Php\PhpType;
 use Leprz\Boilerplate\Tests\UnitTestCase;
@@ -382,6 +385,35 @@ class PhpFileContentBuilderTest extends UnitTestCase
 
         $this->assertStringContainsString(
             'test(array $test)',
+            $phpFileContent
+        );
+    }
+
+    public function test_build_should_buildPhpClassAttributes()
+    {
+        $attributeFQCN = sprintf('%s\Test\TestAttribute', self::APP_PREFIX);
+        $phpFileContent = $this->phpFileContentBuilder->build(
+            (new PhpClass('TestClass'))
+                ->addAttribute(
+                    (new PhpAttributeCall(PhpAttribute::fromFQCN($attributeFQCN)))
+                        ->addArgument(new PhpArgument('name'))
+                        ->addArgument(PhpArgument::const('\\Test\\TestNamespace', 'SOME_CONST'))
+                        ->addArgument(new PhpArgument('The name', 'named'))
+                )
+        );
+
+        $this->assertStringContainsString(
+            sprintf('use %s;', $attributeFQCN),
+            $phpFileContent
+        );
+
+        $this->assertStringContainsString(
+            sprintf('use %s;', 'Test\\TestNamespace'),
+            $phpFileContent
+        );
+
+        $this->assertStringContainsString(
+            "#[TestAttribute('name', TestNamespace::SOME_CONST, named: 'The name')]",
             $phpFileContent
         );
     }

@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace Leprz\Boilerplate\PathNode\Php;
 
 use Leprz\Boilerplate\PathNode\Folder;
+use Leprz\Boilerplate\PathNode\Php\Call\PhpAttributeCall;
 
 /**
  * @package Leprz\Boilerplate\PathNode\Php
@@ -37,6 +38,11 @@ class PhpClass extends PhpFile
      * @var bool
      */
     private bool $isExternal = false;
+
+    /**
+     * @var \Leprz\Boilerplate\PathNode\Php\Call\PhpAttributeCall[]
+     */
+    private array $attributes = [];
 
     /**
      * @param string $class
@@ -146,5 +152,20 @@ class PhpClass extends PhpFile
     public function getUsedTraits(): array
     {
         return $this->usedTraits;
+    }
+
+    public function addAttribute(PhpAttributeCall $attribute): self
+    {
+        $this->attributes[] = $attribute;
+
+        return $this;
+    }
+
+    /**
+     * @return \Leprz\Boilerplate\PathNode\Php\Call\PhpAttributeCall[]
+     */
+    public function getAttributes(): array
+    {
+        return $this->attributes;
     }
 }

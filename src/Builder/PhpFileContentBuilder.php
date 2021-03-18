@@ -18,6 +18,7 @@ use Leprz\Boilerplate\PathNode\Php\PhpMethod;
 use Leprz\Boilerplate\PathNode\Php\PhpTrait;
 use Leprz\Boilerplate\PathNode\Php\PhpType;
 use Nette\PhpGenerator\ClassType;
+use Nette\PhpGenerator\Literal;
 use Nette\PhpGenerator\Method;
 use Nette\PhpGenerator\PhpFile as PhpFileGen;
 use Nette\PhpGenerator\PhpNamespace;
@@ -132,6 +133,38 @@ class PhpFileContentBuilder
             $use = $this->classMetadataBuilder->buildUse($implement);
             $namespace->addUse($use);
             $class->addImplement($use);
+        }
+
+        $attributes = $phpClass->getAttributes();
+
+        foreach ($attributes as $attribute) {
+            $use = $this->classMetadataBuilder->buildUse($attribute->getAttribute());
+            $namespace->addUse($use);
+
+            $arguments = $attribute->getArguments();
+            $args = [];
+            foreach ($arguments as $argument) {
+                $value = $argument->getValue();
+
+                if ($argument->isLiteralValue()) {
+                    $exploded = explode('::', $value);
+                    if (array_key_exists(0, $exploded)) {
+                        $fqcn = $exploded[0];
+                        $namespace->addUse($fqcn);
+                        $exploded[0] = preg_replace('/.*\\\\/', '', $fqcn);
+                        $value = implode('::', $exploded);
+                    }
+                    $value = new Literal($value);
+                }
+
+                if ($name = $argument->getName()) {
+                    $args[$name] = $value;
+                } else {
+                    $args[] = $value;
+                }
+            }
+
+            $class->addAttribute($use, $args);
         }
 
         return $class;
